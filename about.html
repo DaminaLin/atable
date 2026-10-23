@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><title>A Garden of Shared Tables</title>
+<html lang="en" data-lang="en"><head><meta charset="utf-8"><title>Where the Table Blooms</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>
 :root{--bg:#f7f4ed;--tx:#232018;--mu:#6f695c;--bd:#ddd6c6;--card:#fffdf8;box-sizing:border-box;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
 :root:not([data-theme="light"]){color-scheme:light dark}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171510;--tx:#eee8da;--mu:#a39c8c;--bd:#3a352a;--card:#201d16}}
-:root[data-theme="dark"]{--bg:#171510;--tx:#eee8da;--mu:#a39c8c;--bd:#3a352a;--card:#201d16}
+html[data-lang="en"] .fr{display:none!important}
+html[data-lang="fr"] .en{display:none!important}
 body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Helvetica Neue",sans-serif;line-height:1.65}
 main{max-width:680px;margin:0 auto;padding:20px 18px 56px}
 nav{display:flex;justify-content:space-between;align-items:center;font-size:14px;margin-bottom:28px}
@@ -16,103 +17,96 @@ nav a{color:var(--mu);text-decoration:none}
 h1{font-family:Georgia,"Times New Roman",serif;font-size:32px;font-weight:400;line-height:1.2;margin:0 0 10px}
 h2{font-family:Georgia,"Times New Roman",serif;font-size:22px;font-weight:400;margin:40px 0 12px}
 p{margin:0 0 12px}.lead{font-size:18px;color:var(--mu)}.note{color:var(--mu);font-size:14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px 18px}
+.d{display:block;color:var(--mu);font-size:15px}
 .steps{display:flex;flex-direction:column;gap:6px;margin-top:18px}
+.step{display:flex;gap:14px;align-items:flex-start;position:relative}
 .arr{align-self:center;color:var(--mu);line-height:0}
 .arr svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .num{position:absolute;top:-10px;left:16px;width:22px;height:22px;border-radius:50%;background:var(--tx);color:var(--bg);font-size:12px;text-align:center;line-height:22px}
-.ic img{width:28px;height:28px;object-fit:contain}
-@media(min-width:640px){.steps{flex-direction:row;gap:4px}.steps .step{flex:1;flex-direction:column;align-items:center;text-align:center}.arr svg{transform:rotate(-90deg)}}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px 18px}
-.step{display:flex;gap:14px;align-items:flex-start;position:relative}
-.ic{flex:none;width:44px;height:44px;border:1px solid var(--bd);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--tx)}
+.ic{flex:none;width:44px;height:44px;border:1px solid var(--bd);border-radius:50%;display:flex;align-items:center;justify-content:center}
 .ic svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.card b{display:block}.card span{color:var(--mu);font-size:15px}
+.ic img{width:28px;height:28px;object-fit:contain}
 .three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.three .card{text-align:center;padding:14px 8px}.three .ic{margin:0 auto 8px}.three span{font-size:13px;display:block}
+.three .card{text-align:center;padding:14px 8px}.three .ic{margin:0 auto 8px}.three b{font-size:14px}
 .q{margin:0 0 14px}.q b{display:block}
-.three b{font-size:14px}
+@media(min-width:640px){.steps{flex-direction:row;gap:4px}.steps .step{flex:1;flex-direction:column;align-items:center;text-align:center}.arr svg{transform:rotate(-90deg)}}
 </style></head><body><main>
-<nav><a href="#" id="back"></a><div class="lang"><button data-l="en">EN</button><button data-l="fr">FR</button></div></nav>
-<div id="app"></div>
+
+<nav>
+<a href="index.html"><span class="en">← The garden</span><span class="fr">← Le jardin</span></a>
+<div class="lang"><button data-l="en">EN</button><button data-l="fr">FR</button></div>
+</nav>
+
+<!-- HOW TO EDIT: every text appears twice, once with class="en" and once with class="fr".
+     Change only the words between the tags. Do not delete the < > symbols or the quotes. -->
+
+<h1><span class="en">Where the Table Blooms</span><span class="fr">Là où fleurit la table</span></h1>
+<p class="lead en">One year in France. One meal cooked together at a time. Every meal opens a flower.</p>
+<p class="lead fr">Une année en France. Un repas cuisiné ensemble à la fois. Chaque repas fait éclore une fleur.</p>
+
+<h2><span class="en">What is this?</span><span class="fr">C’est quoi ?</span></h2>
+<p class="en">I’m spending a year in France on a working holiday, and I’d like to meet people the way I love most: by sharing a home-cooked meal.</p>
+<p class="en">So I’d love to invite you to cook with me. I make a comforting dish from my home, and you teach me a dish from yours. Afterwards, one flower in this garden blooms—with a photo of that meal, a sentence from you, and our story.</p>
+<p class="en">This garden isn’t mine alone. It only blooms if you say yes.</p>
+<p class="fr">Je passe un an en France avec un visa vacances-travail. J’aimerais rencontrer du monde à ma façon : en partageant un repas fait maison.</p>
+<p class="fr">Alors, je te propose de cuisiner avec moi. Je te prépare un plat réconfortant de chez moi, et tu m’apprends un plat de chez toi. Après ça, une fleur de ce jardin éclot : avec une photo de notre repas, un petit mot de ta part et notre histoire.</p>
+<p class="fr">Ce jardin n’est pas qu’à moi. Il ne fleurit que si tu me dis oui.</p>
+
+<h2><span class="en">How it works</span><span class="fr">Comment ça marche</span></h2>
+<div class="steps">
+
+<div class="card step"><span class="num">1</span>
+<!-- ICON: to use your own picture, replace the whole <svg>...</svg> with <img src="icons/shop.png" alt=""> -->
+<div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10h14l-1.5 9h-11z"/><path d="M9 10l3-6 3 6"/></svg></div>
+<div><b><span class="en">Shop together</span><span class="fr">On fait les courses</span></b>
+<span class="d"><span class="en">Let’s meet at a market or a grocery store and pick the ingredients together. A public place, in daytime, easy to say yes to.</span><span class="fr">Retrouvons-nous dans un marché ou un supermarché pour choisir les ingrédients ensemble. Un lieu public, en journée : facile de dire oui.</span></span></div></div>
+
+<div class="arr"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15M6 13l6 6 6-6"/></svg></div>
+
+<div class="card step"><span class="num">2</span>
+<div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11h16v3a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M2 11h20M9 3c-1 1.5 1 2.5 0 4M14 3c-1 1.5 1 2.5 0 4"/></svg></div>
+<div><b><span class="en">Cook together</span><span class="fr">On cuisine</span></b>
+<span class="d"><span class="en">Then we cook. I show you a dish from my home, you show me one from yours. Nobody has to be a good cook.</span><span class="fr">Je te montre un plat de chez moi, tu m’en montres un de chez toi. Pas besoin d’être un as de la cuisine.</span></span></div></div>
+
+<div class="arr"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15M6 13l6 6 6-6"/></svg></div>
+
+<div class="card step"><span class="num">3</span>
+<div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="2.2"/><path d="M12 9.8C10 6 12 3 12 3s2 3 0 6.8M14.2 12c3.8-2 6.8 0 6.8 0s-3 2-6.8 0M12 14.2c2 3.8 0 6.8 0 6.8s-2-3 0-6.8M9.8 12C6 14 3 12 3 12s3-2 6.8 0"/></svg></div>
+<div><b><span class="en">A flower opens</span><span class="fr">Une fleur s’ouvre</span></b>
+<span class="d"><span class="en">A flower in the garden opens with a photo of our meal, a sentence from you, and our story.</span><span class="fr">Une fleur du jardin s’ouvre avec la photo de notre repas, une phrase de ta part et notre histoire.</span></span></div></div>
+
+</div>
+
+<h2><span class="en">You decide what’s shared</span><span class="fr">Tu décides de ce qui est partagé</span></h2>
+<div class="three">
+<div class="card"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v10H4z"/><path d="M8 11h5M8 14h8"/></svg></div><b><span class="en">Your name</span><span class="fr">Ton prénom</span></b></div>
+<div class="card"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="9" cy="10.5" r=".6"/><circle cx="15" cy="10.5" r=".6"/><path d="M9 15c1.5 1.5 4.5 1.5 6 0"/></svg></div><b><span class="en">Your face</span><span class="fr">Ton visage</span></b></div>
+<div class="card"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h6a2 2 0 0 1 1 .5A2 2 0 0 1 13 5h6v13h-6a2 2 0 0 0-1 .5 2 2 0 0 0-1-.5H5z"/><path d="M12 5.5V18.5"/></svg></div><b><span class="en">Story and recipe</span><span class="fr">Histoire et recette</span></b></div>
+</div>
+
+<h2><span class="en">Good to know</span><span class="fr">Bon à savoir</span></h2>
+
+<div class="q"><b><span class="en">Do I need to speak English well?</span><span class="fr">Faut-il bien parler anglais ou français ?</span></b>
+<span class="en">No. The food does most of the talking, and we can use a translator.</span><span class="fr">Non. La cuisine fait presque tout le travail, et on peut utiliser un traducteur.</span></div>
+
+<div class="q"><b><span class="en">Is this for sale, or a business?</span><span class="fr">C’est un projet commercial ?</span></b>
+<span class="en">No. It’s a personal art project. Nothing is sold and nothing is tracked.</span><span class="fr">Non. C’est un projet artistique personnel. Rien n’est vendu, rien n’est suivi.</span></div>
+
+<div class="q"><b><span class="en">Is the artwork real?</span><span class="fr">L’illustration est-elle réelle ?</span></b>
+<span class="en">The garden illustration is AI-generated. Photos of dishes may be colour-adjusted so the garden looks cohesive. Everything else, the meals, the people, the sentences, is real.</span><span class="fr">L’illustration du jardin est générée par IA. Les photos des plats peuvent être retouchées en couleur pour que le jardin soit harmonieux. Tout le reste est réel : les repas, les gens, les phrases.</span></div>
+
+<div class="q"><b><span class="en">What if I change my mind?</span><span class="fr">Et si je change d’avis ?</span></b>
+<span class="en">Tell me any time, now or years later, and I’ll edit or remove your flower.</span><span class="fr">Dis-le-moi à tout moment, même des années plus tard : je modifierai ou je retirerai ta fleur.</span></div>
+
+<p class="note en" style="margin-top:32px">If you’re reading this because I asked you to cook with me, thank you. You’re the reason a flower can bloom.</p>
+<p class="note fr" style="margin-top:32px">Si tu lis ceci parce que je t’ai proposé de cuisiner avec moi : merci. C’est grâce à toi qu’une fleur peut éclore.</p>
+
+</main>
 <script>
-/* ===== EDIT YOUR TEXT HERE. Each language has the same structure. ===== */
-var TEXT={
-en:{
- back:"← The garden",
- title:"Where the Table Blooms",
- lead:"One year in France. One meal cooked together at a time. Every meal opens a flower.",
- whatH:"What is this?",
- what:[
-  "I’m spending a year in France on a working holiday, and I’d like to meet people the way I love most: by sharing a home-cooked meal.",
-  "So I’d love to invite you to cook with me. I make a comforting dish from my home, and you teach me a dish from yours. Afterwards, one flower in this garden blooms—with a photo of that meal, a sentence from you, and our story.",
-  "This garden isn’t mine alone. It only blooms if you say yes."],
- howH:"How it works",
- steps:[
-  ["shop","Shop together","Let’s meet at a market or a grocery store and pick the ingredients together. A public place, in daytime, easy to say yes to."],
-  ["cook","Cook together","Then we cook. I show you a dish from my home, you show me one from yours. Nobody has to be a good cook."],
-  ["flower","A flower blooms","A flower in the garden blooms with a photo of our meal, a sentence from you, and our story."]],
- decideH:"You decide what’s shared",
- decide:[
-  ["name","Your name"],
-  ["face","Your face"],
-  ["story","Story and recipe"]],
- knowH:"Good to know",
- know:[
-  ["Do I need to speak English well?","No. The food does most of the talking, and we can use a translator."],
-  ["Is this for sale, or a business?","No. It’s a personal art project. Nothing is sold and nothing is tracked."],
-  ["Is the artwork real?","The garden illustration is AI-generated. Photos of dishes may be colour-adjusted so the garden looks cohesive. Everything else, the meals, the people, the sentences, is real."],
-  ["What if I change my mind?","Tell me any time, now or years later, and I’ll edit or remove your flower."]],
- thanks:"If you’re reading this because I asked you to cook with me, thank you. You’re the reason a flower can open."},
-fr:{
- back:"← Le jardin",
- title:"Là où fleurit la table",
- lead:"Une année en France. Un repas cuisiné ensemble à la fois. Chaque repas fait éclore une fleur.",
- whatH:"C’est quoi ?",
- what:[
-  "Je passe un an en France avec un visa vacances-travail. J’aimerais rencontrer du monde à ma façon : en partageant un repas fait maison.",
-  "Alors, je te propose de cuisiner avec moi. Je te prépare un plat réconfortant de chez moi, et tu m’apprends un plat de chez toi. Après ça, une fleur de ce jardin éclot : avec une photo de notre repas, un petit mot de ta part et notre histoire."
-  "Ce jardin n’est pas qu’à moi. Il ne fleurit que si tu me dis oui."],
- howH:"Comment ça marche",
- steps:[
-  ["shop","On fait les courses","Retrouvons-nous dans un marché ou un supermarché pour choisir les ingrédients ensemble. Un lieu public, en journée : facile de dire oui."],
-  ["cook","On cuisine","Je te montre un plat de chez moi, tu m’en montres un de chez toi. Pas besoin d’être un as de la cuisine."],
-  ["flower","Une fleur s’ouvre","Une fleur du jardin s’ouvre avec la photo de notre repas, une phrase de ta part et notre histoire."]],
- decideH:"Tu décides de ce qui est partagé",
- decide:[
-  ["name","Ton prénom"],
-  ["face","Ton visage"],
-  ["story","Histoire et recette"]],
- knowH:"Bon à savoir",
- know:[
-  ["Faut-il bien parler anglais ou français ?","Non. La cuisine fait presque tout le travail, et on peut utiliser un traducteur."],
-  ["C’est un projet commercial ?","Non. C’est un projet artistique personnel. Rien n’est vendu, rien n’est suivi."],
-  ["L’illustration est-elle réelle ?","L’illustration du jardin est générée par IA. Les photos des plats peuvent être retouchées en couleur pour que le jardin soit harmonieux. Tout le reste est réel : les repas, les gens, les phrases."],
-  ["Et si je change d’avis ?","Dis-le-moi à tout moment, même des années plus tard : je modifierai ou je retirerai ta fleur."]],
- thanks:"Si tu lis ceci parce que je t’ai proposé de cuisiner avec moi : merci. C’est grâce à toi qu’une fleur peut s’ouvrir."}
-};
-/* ===== End of text. The code below draws the page. ===== */
-/* ICONS: each icon is SVG shapes on a 24x24 grid. To use your own picture instead, replace the shapes with a file path in quotes, e.g. shop:'icons/shop.png' */
-var I={
-shop:'<path d="M5 10h14l-1.5 9h-11z"/><path d="M9 10l3-6 3 6"/>',
-cook:'<path d="M4 11h16v3a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M2 11h20M9 3c-1 1.5 1 2.5 0 4M14 3c-1 1.5 1 2.5 0 4"/>',
-flower:'<circle cx="12" cy="12" r="2.2"/><path d="M12 9.8C10 6 12 3 12 3s2 3 0 6.8M14.2 12c3.8-2 6.8 0 6.8 0s-3 2-6.8 0M12 14.2c2 3.8 0 6.8 0 6.8s-2-3 0-6.8M9.8 12C6 14 3 12 3 12s3-2 6.8 0"/>',
-name:'<path d="M4 7h16v10H4z"/><path d="M8 11h5M8 14h8"/>',
-face:'<circle cx="12" cy="12" r="8"/><circle cx="9" cy="10.5" r=".6"/><circle cx="15" cy="10.5" r=".6"/><path d="M9 15c1.5 1.5 4.5 1.5 6 0"/>',
-story:'<path d="M5 5h6a2 2 0 0 1 1 .5A2 2 0 0 1 13 5h6v13h-6a2 2 0 0 0-1 .5 2 2 0 0 0-1-.5H5z"/><path d="M12 5.5V18.5"/>'};
-var AR='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15M6 13l6 6 6-6"/></svg>';
-function ic(k){var v=I[k];return '<div class="ic">'+(/^(\.|\/|http|data:)/.test(v)?'<img src="'+v+'" alt="">':'<svg viewBox="0 0 24 24" aria-hidden="true">'+v+'</svg>')+'</div>'}
-function draw(l){
-var t=TEXT[l],h='';
-document.documentElement.lang=l;document.getElementById('back').textContent=t.back;
-h+='<h1>'+t.title+'</h1><p class="lead">'+t.lead+'</p>';
-h+='<h2>'+t.whatH+'</h2>'+t.what.map(function(p){return '<p>'+p+'</p>'}).join('');
-h+='<h2>'+t.howH+'</h2><div class="steps">'+t.steps.map(function(s,i){return '<div class="card step"><span class="num">'+(i+1)+'</span>'+ic(s[0])+'<div><b>'+s[1]+'</b><span>'+s[2]+'</span></div></div>'}).join('<div class="arr">'+AR+'</div>')+'</div>';
-h+='<h2>'+t.decideH+'</h2><div class="three">'+t.decide.map(function(s){return '<div class="card">'+ic(s[0])+'<b>'+s[1]+'</b></div>'}).join('')+'</div>';
-h+='<h2>'+t.knowH+'</h2>'+t.know.map(function(q){return '<div class="q"><b>'+q[0]+'</b>'+q[1]+'</div>'}).join('');
-h+='<p class="note" style="margin-top:32px">'+t.thanks+'</p>';
-document.getElementById('app').innerHTML=h;
-document.querySelectorAll('.lang button').forEach(function(b){b.classList.toggle('on',b.dataset.l===l)});
-}
-document.querySelectorAll('.lang button').forEach(function(b){b.onclick=function(){draw(b.dataset.l)}});
-draw((navigator.language||'en').slice(0,2)==='fr'?'fr':'en');
-</script></main></body></html>
+function setLang(l){document.documentElement.setAttribute('data-lang',l);document.documentElement.lang=l;
+document.querySelectorAll('.lang button').forEach(function(b){b.classList.toggle('on',b.dataset.l===l)})}
+document.querySelectorAll('.lang button').forEach(function(b){b.onclick=function(){setLang(b.dataset.l)}});
+setLang((navigator.language||'en').slice(0,2)==='fr'?'fr':'en');
+</script>
+</body></html>
