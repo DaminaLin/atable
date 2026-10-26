@@ -1,14 +1,766 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><title>Where the Table Blooms</title>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<title>Where the Table Blooms — Là où fleurit la table</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>
-:root{--bg:#f7f4ed;--tx:#232018;--mu:#6f695c;box-sizing:border-box}
-@media(prefers-color-scheme:dark){:root{--bg:#171510;--tx:#eee8da;--mu:#a39c8c}}
-body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;background:var(--bg);color:var(--tx);font-family:system-ui,sans-serif;padding:24px}
-h1{font-family:Georgia,serif;font-weight:400;font-size:32px;margin:0 0 10px}
-p{color:var(--mu);margin:0 0 18px}a{color:var(--tx)}
-</style></head><body><div>
-<h1>Where the Table Blooms</h1>
-<p>The garden is growing. It opens here soon.</p>
-<a href="about.html">About this project</a>
-</div></body></html>
+:root {
+  --bg: #f7f4ed;
+  --tx: #232018;
+  --mu: #6f695c;
+  --bd: #ddd6c6;
+  --card: #fffdf8;
+  --paper-petal: #faf7f0;
+  --ink: #232018;
+  --accent: #b85d3b;
+  box-sizing: border-box;
+  padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px);
+}
+:root:not([data-theme="light"]) { color-scheme: light dark; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #171510;
+    --tx: #eee8da;
+    --mu: #a39c8c;
+    --bd: #3a352a;
+    --card: #201d16;
+    --paper-petal: #28241c;
+    --ink: #d8d0c0;
+    --accent: #d47a57;
+  }
+}
+*, *::before, *::after { box-sizing: inherit; }
+html[data-lang="en"] .fr { display: none !important; }
+html[data-lang="fr"] .en { display: none !important; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--tx);
+  font-family: system-ui, -apple-system, "Helvetica Neue", sans-serif;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  user-select: none;
+}
+
+/* Top Navigation (Matches about.html) */
+header {
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 20px 18px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  z-index: 20;
+}
+.brand-sub {
+  color: var(--mu);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.about-pill {
+  color: var(--tx);
+  text-decoration: none;
+  border: 1px solid var(--bd);
+  background: var(--card);
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.about-pill:hover {
+  border-color: var(--tx);
+  transform: translateY(-1px);
+}
+.lang button {
+  font: inherit;
+  font-size: 13px;
+  padding: 4px 10px;
+  border: 1px solid var(--bd);
+  background: transparent;
+  color: var(--mu);
+  cursor: pointer;
+}
+.lang button:first-child { border-radius: 999px 0 0 999px; }
+.lang button:last-child { border-radius: 0 999px 999px 0; border-left: 0; }
+.lang button.on { background: var(--tx); color: var(--bg); border-color: var(--tx); }
+
+/* Center Hero Title */
+.hero-intro {
+  text-align: center;
+  padding: 18px 18px 4px;
+  max-width: 600px;
+  margin: 0 auto;
+  z-index: 10;
+}
+h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  font-size: clamp(28px, 5vw, 38px);
+  line-height: 1.2;
+  margin: 0 0 8px;
+}
+.lead {
+  color: var(--mu);
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Garden Stage */
+.garden-viewport {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  min-height: 460px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.garden-viewport.pannable {
+  cursor: grab;
+}
+.garden-viewport.pannable:active {
+  cursor: grabbing;
+}
+.garden-canvas {
+  position: relative;
+  width: 860px;
+  height: 480px;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Botanical Background Foliage Silhouettes */
+.bg-foliage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* Individual Flower Node */
+.flower-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.flower-svg {
+  overflow: visible;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.flower-node:hover .flower-svg {
+  transform: scale(1.04);
+}
+
+/* 3D Perspective Petal Animation */
+.petal-group {
+  transform-origin: 100px 100px;
+  transition:
+    transform 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1.1s ease,
+    opacity 0.9s ease;
+}
+.petal-group.inner {
+  transition-delay: 0.14s;
+}
+.stamen-group {
+  transform-origin: 100px 100px;
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.22s, opacity 0.6s ease;
+}
+.sepal-group {
+  transform-origin: 100px 105px;
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s ease;
+}
+
+/* State 1: Dormant Bud (Waiting for a meal) */
+.flower-node.state-bud .petal-photo {
+  opacity: 0;
+}
+.flower-node.state-bud .petal-group.outer {
+  transform: rotate(var(--rot)) scaleX(0.52) scaleY(0.38);
+  opacity: 0.72;
+}
+.flower-node.state-bud .petal-group.inner {
+  transform: rotate(var(--rot)) scaleX(0.38) scaleY(0.28);
+  opacity: 0.55;
+}
+.flower-node.state-bud .stamen-group {
+  transform: scale(0.45);
+  opacity: 0.3;
+}
+.flower-node.state-bud:hover .petal-group.outer {
+  transform: rotate(var(--rot)) scaleX(0.64) scaleY(0.48);
+  opacity: 0.92;
+}
+.flower-node.state-bud:hover .petal-group.inner {
+  transform: rotate(var(--rot)) scaleX(0.48) scaleY(0.36);
+  opacity: 0.8;
+}
+
+/* State 2: Compact Bloomed (Outside spotlight when panning) */
+.flower-node.state-compact .petal-photo {
+  opacity: 0.25;
+  filter: grayscale(0.6) brightness(0.9);
+  transition: opacity 0.9s ease, filter 0.9s ease;
+}
+.flower-node.state-compact .petal-group.outer {
+  transform: rotate(var(--rot)) scaleX(0.68) scaleY(0.52);
+}
+.flower-node.state-compact .petal-group.inner {
+  transform: rotate(var(--rot)) scaleX(0.55) scaleY(0.42);
+}
+.flower-node.state-compact .stamen-group {
+  transform: scale(0.65);
+  opacity: 0.65;
+}
+
+/* State 3: Full Blooming in Spotlight */
+.flower-node.state-open .petal-photo {
+  opacity: 0.94;
+  filter: sepia(0.06) contrast(0.98) brightness(1);
+  transition: opacity 0.9s ease, filter 0.9s ease;
+}
+.flower-node.state-open .petal-group.outer,
+.flower-node.state-open .petal-group.inner {
+  transform: rotate(0deg) scaleX(1) scaleY(1);
+  filter: drop-shadow(0 2px 5px rgba(35, 32, 24, 0.14));
+}
+.flower-node.state-open .sepal-group {
+  transform: scale(0.75) translateY(8px);
+  opacity: 0.35;
+}
+.flower-node.state-open .stamen-group {
+  transform: scale(1);
+  opacity: 0.85;
+}
+.flower-node.state-open:hover .stamen-group {
+  opacity: 0.22; /* Soften ink stamen on hover to show dish clearly */
+}
+
+/* Labels under flowers */
+.flower-caption {
+  margin-top: 4px;
+  text-align: center;
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.flower-num {
+  font-family: Georgia, serif;
+  font-size: 12px;
+  color: var(--mu);
+  letter-spacing: 0.05em;
+}
+.flower-title {
+  display: block;
+  font-family: Georgia, serif;
+  font-size: 15px;
+  color: var(--tx);
+  margin-top: 1px;
+}
+.state-bud .flower-title {
+  font-size: 12px;
+  color: var(--mu);
+  font-style: italic;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.25s, transform 0.25s;
+}
+.state-bud:hover .flower-title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Footer Status Bar */
+footer {
+  text-align: center;
+  padding: 10px 18px 28px;
+  z-index: 10;
+}
+.garden-progress {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 13px;
+  color: var(--mu);
+  margin-bottom: 12px;
+}
+.dot-live {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.cta-link {
+  display: block;
+  color: var(--tx);
+  font-size: 15px;
+  text-underline-offset: 4px;
+}
+
+/* Story Modal / Card (Matches about.html .card aesthetic) */
+.story-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(23, 21, 16, 0.38);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+  z-index: 100;
+}
+.story-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.story-card {
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: 18px;
+  max-width: 440px;
+  width: 100%;
+  padding: 24px 22px 22px;
+  position: relative;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.14);
+  transform: translateY(12px) scale(0.98);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.story-backdrop.open .story-card {
+  transform: translateY(0) scale(1);
+}
+.close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--bd);
+  background: transparent;
+  color: var(--mu);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+}
+.dish-plate-preview {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin: 4px auto 16px;
+  overflow: hidden;
+  border: 1px solid var(--bd);
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dish-plate-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.story-meta {
+  font-size: 12px;
+  color: var(--mu);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+.story-card h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  font-size: 24px;
+  margin: 4px 0 12px;
+  text-align: center;
+}
+.story-quote {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--tx);
+  border-left: 2px solid var(--bd);
+  padding-left: 12px;
+  margin: 0 0 14px;
+}
+.story-body {
+  font-size: 14.5px;
+  color: var(--mu);
+  margin: 0 0 18px;
+}
+.story-action {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--tx);
+  color: var(--bg);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .garden-canvas {
+    transform: scale(0.78);
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Shared SVG Definitions: 6 Anemone Petals + Hand-drawn Ink Creases -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <!-- 3 Outer Petals (Top, Bottom-Right, Bottom-Left) -->
+    <path id="petal-shape-1" d="M100,100 C72,82 48,42 68,18 C85,4 115,4 132,18 C152,42 128,82 100,100 Z"/>
+    <path id="petal-shape-2" d="M100,100 C122,74 166,60 184,82 C196,100 188,128 170,142 C144,154 114,124 100,100 Z"/>
+    <path id="petal-shape-3" d="M100,100 C86,124 56,154 30,142 C12,128 4,100 16,82 C34,60 78,74 100,100 Z"/>
+    <!-- 3 Inner Overlapping Petals -->
+    <path id="petal-shape-4" d="M100,100 C112,70 148,32 170,48 C186,62 180,92 158,106 C134,116 110,108 100,100 Z"/>
+    <path id="petal-shape-5" d="M100,100 C118,118 134,162 114,182 C98,194 72,186 64,164 C58,138 86,114 100,100 Z"/>
+    <path id="petal-shape-6" d="M100,100 C82,82 42,66 26,46 C18,28 38,12 60,24 C80,38 92,76 100,100 Z"/>
+
+    <clipPath id="clip-p1"><use href="#petal-shape-1"/></clipPath>
+    <clipPath id="clip-p2"><use href="#petal-shape-2"/></clipPath>
+    <clipPath id="clip-p3"><use href="#petal-shape-3"/></clipPath>
+    <clipPath id="clip-p4"><use href="#petal-shape-4"/></clipPath>
+    <clipPath id="clip-p5"><use href="#petal-shape-5"/></clipPath>
+    <clipPath id="clip-p6"><use href="#petal-shape-6"/></clipPath>
+
+    <!-- Delicate Hand-drawn Botanical Ink Creases per Petal -->
+    <g id="ink-creases" fill="none" stroke="var(--ink)" stroke-linecap="round">
+      <path d="M100,95 Q92,55 86,26 M100,95 Q102,50 105,22 M100,95 Q114,58 120,30" stroke-width="0.7" opacity="0.55"/>
+      <path d="M104,98 Q142,88 172,94 M104,98 Q145,105 168,118" stroke-width="0.7" opacity="0.55"/>
+      <path d="M96,98 Q58,88 28,94 M96,98 Q55,105 32,118" stroke-width="0.7" opacity="0.55"/>
+      <path d="M103,96 Q135,66 158,58 M103,96 Q142,80 162,78" stroke-width="0.65" opacity="0.5"/>
+      <path d="M100,104 Q106,142 104,170 M100,104 Q90,142 82,165" stroke-width="0.65" opacity="0.5"/>
+      <path d="M96,95 Q64,62 42,42 M96,95 Q72,54 56,34" stroke-width="0.65" opacity="0.5"/>
+    </g>
+
+    <!-- Hand-drawn Anemone Stamen Center -->
+    <g id="anemone-stamen">
+      <circle cx="100" cy="100" r="14" fill="var(--bg)" stroke="var(--ink)" stroke-width="1.2"/>
+      <circle cx="100" cy="100" r="9" fill="var(--ink)" opacity="0.85"/>
+      <!-- Radiating filaments -->
+      <path d="M100,80 L100,120 M80,100 L120,100 M85,85 L115,115 M115,85 L85,115 M92,81 L108,119 M81,92 L119,108" stroke="var(--ink)" stroke-width="0.9"/>
+      <circle cx="100" cy="79" r="1.6" fill="var(--ink)"/>
+      <circle cx="100" cy="121" r="1.6" fill="var(--ink)"/>
+      <circle cx="79" cy="100" r="1.6" fill="var(--ink)"/>
+      <circle cx="121" cy="100" r="1.6" fill="var(--ink)"/>
+      <circle cx="84" cy="84" r="1.6" fill="var(--ink)"/>
+      <circle cx="116" cy="116" r="1.6" fill="var(--ink)"/>
+      <circle cx="116" cy="84" r="1.6" fill="var(--ink)"/>
+      <circle cx="84" cy="116" r="1.6" fill="var(--ink)"/>
+    </g>
+  </defs>
+</svg>
+
+<header>
+  <div class="brand-sub">
+    <span class="en">Bordeaux &amp; beyond · 2026–2027</span>
+    <span class="fr">Bordeaux &amp; ailleurs · 2026–2027</span>
+  </div>
+  <div class="nav-right">
+    <a class="about-pill" href="about.html">
+      <span class="en">About this project</span>
+      <span class="fr">À propos du projet</span>
+    </a>
+    <div class="lang">
+      <button data-l="en">EN</button>
+      <button data-l="fr">FR</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero-intro">
+  <h1>
+    <span class="en">Where the Table Blooms</span>
+    <span class="fr">Là où fleurit la table</span>
+  </h1>
+  <p class="lead en">The garden is growing. Every shared meal opens a flower.</p>
+  <p class="lead fr">Le jardin grandit. Chaque repas partagé fait éclore une fleur.</p>
+</section>
+
+<main class="garden-viewport" id="viewport">
+  <div class="garden-canvas" id="canvas">
+    <!-- Hand-drawn Silhouette Leaves & Dandelion Seeds Background -->
+    <svg class="bg-foliage" viewBox="0 0 860 480" fill="none">
+      <!-- Left silhouette branch -->
+      <path d="M360,260 Q290,220 230,160" stroke="var(--ink)" stroke-width="1.3" opacity="0.45"/>
+      <path d="M285,205 C265,195 255,175 275,170 C290,175 292,195 285,205 Z" fill="var(--ink)" opacity="0.75"/>
+      <path d="M255,180 C235,172 228,152 248,148 C262,154 262,172 255,180 Z" fill="var(--ink)" opacity="0.75"/>
+      <!-- Right silhouette branch -->
+      <path d="M490,230 Q560,190 620,145" stroke="var(--ink)" stroke-width="1.3" opacity="0.45"/>
+      <path d="M555,192 C572,180 585,162 565,156 C550,162 548,182 555,192 Z" fill="var(--ink)" opacity="0.75"/>
+      <path d="M590,168 C608,158 618,140 598,135 C584,140 584,158 590,168 Z" fill="var(--ink)" opacity="0.75"/>
+      <!-- Floating dandelion seeds -->
+      <g stroke="var(--ink)" stroke-width="0.9" opacity="0.55">
+        <path d="M330,110 L342,92 M342,92 L336,84 M342,92 L344,82 M342,92 L351,87"/>
+        <circle cx="330" cy="110" r="1.5" fill="var(--ink)"/>
+        <path d="M540,330 L554,314 M554,314 L549,305 M554,314 L557,304 M554,314 L563,310"/>
+        <circle cx="540" cy="330" r="1.5" fill="var(--ink)"/>
+      </g>
+    </svg>
+
+    <!-- Flowers injected here by JS -->
+    <div id="flower-layer"></div>
+  </div>
+</main>
+
+<footer>
+  <div class="garden-progress">
+    <span class="dot-live"></span>
+    <span class="en"><b id="bloom-count-en">1</b> flower in bloom · <b>5</b> buds waiting for a shared meal</span>
+    <span class="fr"><b id="bloom-count-fr">1</b> fleur éclose · <b>5</b> bourgeons en attente d’un repas partagé</span>
+  </div>
+  <a class="cta-link" href="about.html">
+    <span class="en">Want to cook together and open the next flower? Read how it works →</span>
+    <span class="fr">Envie de cuisiner ensemble et d’ouvrir la prochaine fleur ? Découvrir le projet →</span>
+  </a>
+</footer>
+
+<!-- Story / Bud Popup Modal -->
+<div class="story-backdrop" id="story-modal">
+  <div class="story-card">
+    <button class="close-btn" id="close-modal" aria-label="Close">×</button>
+    <div class="dish-plate-preview" id="modal-plate"></div>
+    <div class="story-meta" id="modal-meta"></div>
+    <h2 id="modal-title"></h2>
+    <blockquote class="story-quote" id="modal-quote"></blockquote>
+    <p class="story-body" id="modal-body"></p>
+    <a class="story-action" href="about.html" id="modal-cta">
+      <span class="en">Cook with me &amp; bloom a flower →</span>
+      <span class="fr">Cuisiner avec moi &amp; faire éclore une fleur →</span>
+    </a>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   HOW TO UPDATE YOUR GARDEN:
+   1. Right now, CONFIG.enablePan is false (fixed temporary homepage).
+      When you have 4+ flowers, change enablePan to true to unlock
+      the "Clustered Spotlight Canvas" (聚落漫遊自動開花)!
+   2. To bloom a new flower, change its status from 'bud' to 'bloom'
+      and replace its photo, title, quote, and story.
+   ===================================================================== */
+const CONFIG = {
+  enablePan: false,       // Set to true later when you want canvas dragging & spotlight!
+  spotlightRadius: 210    // Distance from center where flowers auto-bloom in pan mode
+};
+
+// Warm Dish Demo SVG Data URI (Replace with your own photo path like 'photos/meal-01.jpg')
+const DEMO_DISH_PHOTO = "data:image/svg+xml;utf8," + encodeURIComponent(`
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <defs>
+    <radialGradient id="plate" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#f6e3ba"/>
+      <stop offset="50%" stop-color="#df9a57"/>
+      <stop offset="85%" stop-color="#9e472a"/>
+      <stop offset="100%" stop-color="#5c2818"/>
+    </radialGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#plate)"/>
+  <circle cx="195" cy="185" r="115" fill="#fff8eb" opacity="0.35"/>
+  <circle cx="170" cy="175" r="46" fill="#c85a32" opacity="0.85"/>
+  <circle cx="235" cy="205" r="38" fill="#d98a3c" opacity="0.85"/>
+  <circle cx="195" cy="225" r="32" fill="#5e7a48" opacity="0.8"/>
+  <circle cx="155" cy="155" r="14" fill="#f7e7c4" opacity="0.9"/>
+</svg>`);
+
+const FLOWERS = [
+  {
+    id: "01",
+    status: "bloom", // 'bloom' or 'bud'
+    x: 430, y: 235, scale: 1.25, rotation: 0,
+    photo: DEMO_DISH_PHOTO, // Put your dish photo URL here, e.g., "images/dish-01.jpg"
+    meta_en: "Flower #01 · Demo Preview",
+    meta_fr: "Fleur n°01 · Aperçu démo",
+    title_en: "First Home-Cooked Meal",
+    title_fr: "Premier repas fait maison",
+    quote_en: "“Every meal cooked together opens a new flower in this garden.”",
+    quote_fr: "« Chaque repas cuisiné ensemble fait éclore une nouvelle fleur dans ce jardin. »",
+    body_en: "This is a preview flower showing how a photograph of our shared dish colours the hand-drawn petals. Click any surrounding bud to see how you can join the next meal.",
+    body_fr: "Voici une fleur de démonstration illustrant comment la photo de notre plat colore les pétales dessinés à la main. Cliquez sur un bourgeon autour pour participer au prochain repas."
+  },
+  {
+    id: "02",
+    status: "bud",
+    x: 235, y: 150, scale: 0.82, rotation: -18,
+    title_en: "Waiting for meal #02",
+    title_fr: "En attente du repas n°02"
+  },
+  {
+    id: "03",
+    status: "bud",
+    x: 625, y: 155, scale: 0.85, rotation: 24,
+    title_en: "Waiting for meal #03",
+    title_fr: "En attente du repas n°03"
+  },
+  {
+    id: "04",
+    status: "bud",
+    x: 210, y: 325, scale: 0.78, rotation: 35,
+    title_en: "Waiting for meal #04",
+    title_fr: "En attente du repas n°04"
+  },
+  {
+    id: "05",
+    status: "bud",
+    x: 640, y: 320, scale: 0.8, rotation: -28,
+    title_en: "Waiting for meal #05",
+    title_fr: "En attente du repas n°05"
+  },
+  {
+    id: "06",
+    status: "bud",
+    x: 430, y: 78, scale: 0.72, rotation: 12,
+    title_en: "Waiting for meal #06",
+    title_fr: "En attente du repas n°06"
+  }
+];
+
+const flowerLayer = document.getElementById('flower-layer');
+
+function createFlowerSVG(flower) {
+  const outerIds = [1, 2, 3];
+  const innerIds = [4, 5, 6];
+  const budRotations = [-16, 14, -12, 18, -14, 12];
+
+  const renderPetal = (pIdx, layerClass) => `
+    <g class="petal-group ${layerClass}" style="--rot:${budRotations[pIdx - 1]}deg">
+      <use href="#petal-shape-${pIdx}" fill="var(--paper-petal)"/>
+      ${flower.status === 'bloom' ? `
+        <image class="petal-photo" href="${flower.photo}" x="5" y="5" width="190" height="190"
+               preserveAspectRatio="xMidYMid slice" clip-path="url(#clip-p${pIdx})"/>
+      ` : ''}
+      <use href="#petal-shape-${pIdx}" fill="none" stroke="var(--ink)" stroke-width="1.25"/>
+    </g>
+  `;
+
+  return `
+    <svg class="flower-svg" width="200" height="200" viewBox="0 0 200 200">
+      <g transform="rotate(${flower.rotation} 100 100)">
+        <!-- Sepals behind bud -->
+        <g class="sepal-group" fill="var(--ink)" opacity="0.65">
+          <path d="M100,105 C82,92 68,68 78,54 C88,64 96,84 100,105 Z"/>
+          <path d="M100,105 C118,92 132,68 122,54 C112,64 104,84 100,105 Z"/>
+        </g>
+        ${outerIds.map(id => renderPetal(id, 'outer')).join('')}
+        ${innerIds.map(id => renderPetal(id, 'inner')).join('')}
+        <use href="#ink-creases"/>
+        <use href="#anemone-stamen" class="stamen-group"/>
+      </g>
+    </svg>
+  `;
+}
+
+function renderGarden() {
+  flowerLayer.innerHTML = '';
+  let bloomCount = 0;
+
+  FLOWERS.forEach((f) => {
+    if (f.status === 'bloom') bloomCount++;
+    const node = document.createElement('div');
+    node.className = `flower-node ${f.status === 'bloom' ? 'state-bud' : 'state-bud'}`;
+    node.dataset.id = f.id;
+    node.style.left = `${f.x}px`;
+    node.style.top = `${f.y}px`;
+    node.style.transform = `translate(-50%, -50%) scale(${f.scale})`;
+
+    node.innerHTML = `
+      ${createFlowerSVG(f)}
+      <div class="flower-caption">
+        <span class="flower-num">#${f.id}</span>
+        <span class="flower-title en">${f.title_en}</span>
+        <span class="flower-title fr">${f.title_fr}</span>
+      </div>
+    `;
+
+    node.addEventListener('click', () => openFlowerModal(f));
+    flowerLayer.appendChild(node);
+
+    // Gentle entrance bloom for bloomed flowers after page load
+    if (f.status === 'bloom') {
+      setTimeout(() => {
+        node.classList.remove('state-bud');
+        node.classList.add('state-open');
+      }, 320);
+    }
+  });
+
+  document.getElementById('bloom-count-en').textContent = bloomCount;
+  document.getElementById('bloom-count-fr').textContent = bloomCount;
+}
+
+/* Modal Logic */
+const modal = document.getElementById('story-modal');
+function openFlowerModal(f) {
+  const plate = document.getElementById('modal-plate');
+  const meta = document.getElementById('modal-meta');
+  const title = document.getElementById('modal-title');
+  const quote = document.getElementById('modal-quote');
+  const body = document.getElementById('modal-body');
+
+  if (f.status === 'bloom') {
+    plate.innerHTML = `<img src="${f.photo}" alt="">`;
+    meta.innerHTML = `<span class="en">${f.meta_en}</span><span class="fr">${f.meta_fr}</span>`;
+    title.innerHTML = `<span class="en">${f.title_en}</span><span class="fr">${f.title_fr}</span>`;
+    quote.style.display = 'block';
+    quote.innerHTML = `<span class="en">${f.quote_en}</span><span class="fr">${f.quote_fr}</span>`;
+    body.innerHTML = `<span class="en">${f.body_en}</span><span class="fr">${f.body_fr}</span>`;
+  } else {
+    plate.innerHTML = `<svg width="68" height="68" viewBox="0 0 200 200"><use href="#anemone-stamen"/></svg>`;
+    meta.innerHTML = `<span class="en">Bud #${f.id} · Unopened</span><span class="fr">Bourgeon n°${f.id} · En attente</span>`;
+    title.innerHTML = `<span class="en">This flower is waiting for you</span><span class="fr">Cette fleur n’attend que toi</span>`;
+    quote.style.display = 'block';
+    quote.innerHTML = `<span class="en">“I make a comforting dish from my home, and you teach me a dish from yours.”</span><span class="fr">« Je te prépare un plat réconfortant de chez moi, et tu m’apprends un plat de chez toi. »</span>`;
+    body.innerHTML = `<span class="en">Once we shop and cook together, this bud will bloom with a photo of our meal and a sentence from you.</span><span class="fr">Après avoir fait les courses et cuisiné ensemble, ce bourgeon éclora avec la photo de notre repas et un petit mot de ta part.</span>`;
+  }
+  modal.classList.add('open');
+}
+
+document.getElementById('close-modal').onclick = () => modal.classList.remove('open');
+modal.onclick = (e) => { if (e.target === modal) modal.classList.remove('open'); };
+
+/* Bilingual Switcher (Synced with about.html via localStorage) */
+function setLang(l) {
+  document.documentElement.setAttribute('data-lang', l);
+  document.documentElement.lang = l;
+  try { localStorage.setItem('table_blooms_lang', l); } catch(e) {}
+  document.querySelectorAll('.lang button').forEach(b => b.classList.toggle('on', b.dataset.l === l));
+}
+document.querySelectorAll('.lang button').forEach(b => {
+  b.onclick = () => setLang(b.dataset.l);
+});
+const savedLang = (() => { try { return localStorage.getItem('table_blooms_lang'); } catch(e) { return null; } })();
+setLang(savedLang || ((navigator.language || 'en').slice(0, 2) === 'fr' ? 'fr' : 'en'));
+
+renderGarden();
+</script>
+</body>
+</html>
