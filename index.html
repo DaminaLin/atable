@@ -52,7 +52,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* 溫潤法式手揉畫紙微粒紋理 */
+    /* 溫潤法式手揉宣紙微粒紋理 */
     .paper-texture {
       background-color: #F7F3EB;
       background-image:
@@ -131,11 +131,22 @@
 
     /* 螢幕中央聚光燈感應圈呼吸動畫 */
     @keyframes pulseSpotlight {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.48; }
-      50% { transform: translate(-50%, -50%) scale(1.018); opacity: 0.78; }
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.45; }
+      50% { transform: translate(-50%, -50%) scale(1.018); opacity: 0.75; }
     }
     .spotlight-ring {
       animation: pulseSpotlight 4.5s ease-in-out infinite;
+    }
+
+    /* 首次進站手勢滑動引導動畫 */
+    @keyframes swipeCue {
+      0% { transform: translateX(20px); opacity: 0; }
+      25% { opacity: 0.9; }
+      75% { transform: translateX(-20px); opacity: 0.9; }
+      100% { transform: translateX(-20px); opacity: 0; }
+    }
+    .swipe-hand-anim {
+      animation: swipeCue 2.2s ease-in-out infinite;
     }
 
     /* 抽屜頂部圓盤：滑鼠懸停時墨線花蕊柔化退開 */
@@ -165,7 +176,7 @@
 <body class="paper-texture h-screen w-screen flex flex-col overflow-hidden">
 
   <!-- =========================================================================
-       全域共用 SVG <defs>：雞蛋花 (Frangipani) 5 瓣螺旋重疊遮罩、立體柔光陰影與暖金花心漸層
+       全域共用 SVG <defs>：無彩色水墨葉枝資產 (#botanical-leaf-branch)、雞蛋花遮罩與光影
        ========================================================================= -->
   <svg width="0" height="0" class="absolute pointer-events-none">
     <defs id="global-flower-defs">
@@ -192,58 +203,73 @@
         <stop offset="60%" stop-color="#D98254" stop-opacity="0.2" />
         <stop offset="100%" stop-color="#FAF7F2" stop-opacity="0" />
       </radialGradient>
+
+      <!-- 無彩色水墨葉枝組件 (原始座標空間 0 0 501.6 501.6) -->
+      <g id="botanical-leaf-branch">
+        <path fill="#221F1D" fill-opacity="0.10" d="M250.8,0c-12,30.4-35.2,62.4-43.2,101.6c-10.4,51.2,23.2,70.4,43.2,87.2V0z"/>
+        <path fill="#221F1D" fill-opacity="0.22" d="M250.8,188.8V0c-12,30.4-35.2,62.4-43.2,101.6"/>
+        <path fill="#221F1D" fill-opacity="0.38" d="M250.8,188.8V0c-12,30.4-17.6,85.6-25.6,124"/>
+        <path fill="#221F1D" fill-opacity="0.10" d="M250.8,0c12,30.4,35.2,62.4,43.2,101.6c10.4,51.2-23.2,70.4-43.2,87.2V0z"/>
+        <path fill="#221F1D" fill-opacity="0.22" d="M250.8,188.8V0c12,30.4,35.2,62.4,43.2,101.6"/>
+        <path fill="#221F1D" fill-opacity="0.38" d="M250.8,188.8V0c12,30.4,17.6,85.6,25.6,124"/>
+        <path fill="#221F1D" fill-opacity="0.80" d="M250.8,501.6c-2.4,0-4-1.6-4-4v-484c0-2.4,1.6-4,4-4s4,1.6,4,4v484 C254.8,499.2,253.2,501.6,250.8,501.6z"/>
+        <path fill="#221F1D" fill-opacity="0.10" d="M90.8,158.4c12,28.8,18.4,66.4,40,98.4c28,41.6,64,32,88.8,29.6L90.8,158.4z"/>
+        <path fill="#221F1D" fill-opacity="0.22" d="M218.8,286.4l-128-128c12,28.8,18.4,66.4,40,98.4"/>
+        <path fill="#221F1D" fill-opacity="0.38" d="M218.8,286.4l-128-128c12,28.8,45.6,69.6,67.2,101.6"/>
+        <path fill="#221F1D" fill-opacity="0.10" d="M90.8,158.4c28.8,12,66.4,18.4,98.4,40c41.6,28,32,64,29.6,88.8L90.8,158.4z"/>
+        <path fill="#221F1D" fill-opacity="0.22" d="M218.8,286.4l-128-128c28.8,12,66.4,18.4,98.4,40"/>
+        <path fill="#221F1D" fill-opacity="0.38" d="M218.8,286.4l-128-128c28.8,12,69.6,45.6,101.6,67.2"/>
+        <path fill="#221F1D" fill-opacity="0.10" d="M126.8,321.6c9.6,22.4,14.4,52,31.2,77.6c21.6,32.8,50.4,25.6,69.6,23.2L126.8,321.6z"/>
+        <path fill="#221F1D" fill-opacity="0.22" d="M227.6,422.4L126.8,321.6c9.6,22.4,14.4,52,31.2,77.6"/>
+        <path fill="#221F1D" fill-opacity="0.38" d="M227.6,422.4L126.8,321.6c9.6,22.4,36,55.2,52.8,80"/>
+        <path fill="#221F1D" fill-opacity="0.10" d="M126.8,321.6c22.4,9.6,52,14.4,77.6,31.2c32.8,21.6,25.6,50.4,23.2,69.6L126.8,321.6z"/>
+        <path fill="#221F1D" fill-opacity="0.22" d="M226.8,422.4l-100-100.8c22.4,9.6,52,14.4,77.6,31.2"/>
+        <path fill="#221F1D" fill-opacity="0.38" d="M226.8,422.4l-100-100.8c22.4,9.6,55.2,36,80,52.8"/>
+        <path fill="#221F1D" fill-opacity="0.80" d="M250,448.8c-0.8,0-2.4,0-3.2-0.8l-100-100.8c-1.6-1.6-1.6-4,0-5.6s4-1.6,5.6,0l100,100 c1.6,1.6,1.6,4,0,5.6C252.4,448.8,250.8,448.8,250,448.8z"/>
+        <path fill="#221F1D" fill-opacity="0.80" d="M250.8,321.6c-0.8,0-2.4,0-3.2-0.8L146.8,219.2c-1.6-1.6-1.6-4,0-5.6s4-1.6,5.6,0l100.8,100.8 c1.6,1.6,1.6,4,0,5.6C252.4,320.8,251.6,321.6,250.8,321.6z"/>
+        <path fill="#221F1D" fill-opacity="0.10" d="M410.8,120c-12,28.8-18.4,66.4-40,98.4c-28,41.6-64,32-88.8,29.6L410.8,120z"/>
+        <path fill="#221F1D" fill-opacity="0.22" d="M282.8,248l128-128c-12,28.8-18.4,66.4-40,98.4"/>
+        <path fill="#221F1D" fill-opacity="0.38" d="M282.8,248l128-128c-12,28.8-45.6,69.6-67.2,101.6"/>
+        <path fill="#221F1D" fill-opacity="0.10" d="M410.8,120c-28.8,12-66.4,18.4-98.4,40c-41.6,28-32,64-29.6,88.8L410.8,120z"/>
+        <path fill="#221F1D" fill-opacity="0.22" d="M282.8,248l128-128c-28.8,12-66.4,18.4-98.4,40"/>
+        <path fill="#221F1D" fill-opacity="0.38" d="M282.8,248l128-128c-28.8,12-69.6,45.6-101.6,67.2"/>
+        <path fill="#221F1D" fill-opacity="0.10" d="M374.8,283.2c-9.6,22.4-14.4,52-31.2,77.6C322,393.6,293.2,386.4,274,384L374.8,283.2z"/>
+        <path fill="#221F1D" fill-opacity="0.22" d="M274,384l100.8-100.8c-9.6,22.4-14.4,52-31.2,77.6"/>
+        <path fill="#221F1D" fill-opacity="0.38" d="M274,384l100.8-100.8c-9.6,22.4-36,55.2-52.8,80"/>
+        <path fill="#221F1D" fill-opacity="0.10" d="M374.8,283.2c-22.4,9.6-52,14.4-77.6,31.2C264.4,336,271.6,364.8,274,384L374.8,283.2z"/>
+        <path fill="#221F1D" fill-opacity="0.22" d="M274.8,384l100.8-100.8c-22.4,9.6-52,14.4-77.6,31.2"/>
+        <path fill="#221F1D" fill-opacity="0.38" d="M274.8,384l100.8-100.8c-22.4,9.6-55.2,36-80,52.8"/>
+        <path fill="#221F1D" fill-opacity="0.80" d="M252.4,410.4c-0.8,0-2.4,0-3.2-0.8c-1.6-1.6-1.6-4,0-5.6l100-100c1.6-1.6,4-1.6,5.6,0s1.6,4,0,5.6 l-100,100C254,410.4,253.2,410.4,252.4,410.4z"/>
+        <path fill="#221F1D" fill-opacity="0.80" d="M252.4,281.6c-0.8,0-2.4,0-3.2-0.8c-1.6-1.6-1.6-4,0-5.6l100-100c1.6-1.6,4-1.6,5.6,0s1.6,4,0,5.6 l-100,100C254,281.6,253.2,281.6,252.4,281.6z"/>
+      </g>
     </defs>
   </svg>
 
   <!-- =========================================================================
-       頂部展覽導覽列 (Header - 法文為主、英文/中文副標為輔，整合 about.html 雙語切換)
+       1. 頂部導覽列 (Header)
        ========================================================================= -->
   <header class="relative z-40 bg-paper-bg/90 backdrop-blur-md border-b border-paper-border px-4 sm:px-7 py-3 shrink-0">
     <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
 
-      <!-- 左側：計畫標題與副標 -->
-      <div class="flex items-center gap-3.5">
-        <button id="btn-reset-camera" class="w-9 h-9 rounded-full bg-paper-ink text-paper-bg flex items-center justify-center font-serif italic text-lg shadow-sm hover:bg-paper-terracotta transition-colors" title="回到聚落中心 / Recenter">
-          ❀
-        </button>
-        <div>
-          <div class="flex items-baseline gap-2.5">
-            <h1 class="font-serif text-xl sm:text-2xl font-semibold text-paper-ink tracking-wide">
-              Là où fleurit la table
-            </h1>
-            <span class="hidden md:inline-block font-serif italic text-sm text-paper-muted border-l border-paper-border pl-2.5">
-              Where the Table Blooms · 餐桌記憶花園
-            </span>
-          </div>
-          <p class="text-[11px] sm:text-xs text-paper-muted">
-            <span class="lang-fr">Une année en France. Chaque repas cuisiné ensemble fait éclore une fleur.</span>
-            <span class="lang-en hidden">One year in France. Every meal cooked together opens a flower.</span>
-          </p>
+      <!-- 左側標題區 -->
+      <div>
+        <div class="flex items-baseline gap-2.5">
+          <h1 class="font-serif text-xl sm:text-2xl font-semibold text-paper-ink tracking-wide">
+            <span class="lang-fr">Là où fleurit la table</span>
+            <span class="lang-en hidden">Where the Table Blooms</span>
+          </h1>
+          <span class="font-serif text-sm text-paper-muted border-l border-paper-border pl-2.5">
+            餐桌記憶花園
+          </span>
         </div>
+        <p class="text-[11px] sm:text-xs text-paper-muted mt-0.5">
+          <span class="lang-fr">Une année en France. Chaque repas cuisiné ensemble fait éclore une fleur.</span>
+          <span class="lang-en hidden">One year in France. Every meal cooked together opens a flower.</span>
+        </p>
       </div>
 
-      <!-- 中央：當前聚落進度徽章 -->
-      <div class="hidden lg:flex items-center gap-2.5 bg-paper-card border border-paper-border rounded-full px-4 py-1.5 shadow-sm">
-        <span class="w-2 h-2 rounded-full bg-paper-terracotta animate-pulse"></span>
-        <span class="font-serif italic text-sm text-paper-ink font-medium">Table I : Automne 2026</span>
-        <span class="text-paper-border">·</span>
-        <span class="text-xs text-paper-muted">
-          <strong class="text-paper-ink">1</strong> fleur éclose · <strong class="text-paper-sage">3</strong> bourgeons en attente
-        </span>
-      </div>
-
-      <!-- 右側：上傳照片測試、關於計畫 (about.html) 與 FR/EN 語言切換 -->
+      <!-- 右上角區：僅保留「關於計畫」按鈕與「FR / EN 語言切換膠囊開關」 -->
       <div class="flex items-center gap-2 sm:gap-2.5">
-        <!-- 替換第 1 朵花照片按鈕 -->
-        <label for="upload-dish-photo" class="cursor-pointer px-3 py-1.5 rounded-full bg-paper-card hover:bg-paper-panel text-paper-dark border border-paper-border text-xs font-medium transition-all flex items-center gap-1.5 shadow-sm" title="換上你拍攝的肯亞料理照片">
-          <svg class="w-3.5 h-3.5 text-paper-terracotta" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          <span class="hidden sm:inline">Photo du plat</span>
-        </label>
-        <input id="upload-dish-photo" type="file" accept="image/*" class="hidden" />
-
-        <!-- 前往 about.html 說明頁 -->
         <a href="about.html" class="px-3.5 py-1.5 rounded-full bg-paper-terracotta hover:bg-[#9E5236] text-paper-bg text-xs font-medium shadow-sm transition-all flex items-center gap-1.5">
           <span class="lang-fr">À propos du projet</span>
           <span class="lang-en hidden">About this project</span>
@@ -252,7 +278,6 @@
           </svg>
         </a>
 
-        <!-- FR / EN 語言切換器 (與 about.html 同步 localStorage) -->
         <div class="inline-flex rounded-full border border-paper-border bg-paper-card p-0.5 text-xs">
           <button type="button" data-set-lang="fr" class="lang-btn px-2.5 py-1 rounded-full font-medium transition-colors bg-paper-ink text-paper-bg">
             FR
@@ -267,47 +292,32 @@
   </header>
 
   <!-- =========================================================================
-       主漫遊畫布視口 (Infinite Clustered Canvas - 2000x1300 px)
+       2. 主漫遊畫布視口 (Infinite Clustered Canvas - 2000x1300 px)
        ========================================================================= -->
   <main class="relative flex-1 w-full overflow-hidden">
 
     <section id="garden-viewport" class="relative w-full h-full overflow-hidden canvas-grab select-none">
 
-      <!-- 左上角浮動漫遊提示與聚光燈開關 -->
-      <div class="absolute top-4 left-4 right-4 z-20 pointer-events-none flex flex-wrap items-center justify-between gap-2">
-        <div class="pointer-events-auto bg-paper-card/90 backdrop-blur-md border border-paper-border rounded-2xl px-4 py-2 shadow-sm flex items-center gap-2.5">
-          <span class="px-2 py-0.5 rounded-full bg-paper-sage/15 text-paper-sage text-[11px] font-medium">
-            Exploration libre
-          </span>
-          <span class="text-xs text-paper-dark">
-            <span class="lang-fr">Glissez la toile ou cliquez sur une fleur · La lumière centrale fait éclore les pétales.</span>
-            <span class="lang-en hidden">Drag canvas or click a flower · Center spotlight awakens the petals.</span>
-          </span>
+      <!-- 首次進站手勢滑動引導動畫 -->
+      <div id="swipe-hint" class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 flex flex-col items-center gap-2 transition-opacity duration-700">
+        <div class="swipe-hand-anim flex items-center justify-center w-12 h-12 rounded-full bg-paper-card/90 backdrop-blur border border-paper-border shadow-md">
+          <svg class="w-6 h-6 text-paper-dark" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" />
+          </svg>
         </div>
-
-        <div class="pointer-events-auto flex items-center gap-2 bg-paper-card/90 backdrop-blur-md border border-paper-border rounded-full px-3.5 py-1.5 shadow-sm">
-          <label class="flex items-center gap-1.5 text-xs text-paper-muted cursor-pointer">
-            <input id="toggle-spotlight-ring" type="checkbox" checked class="accent-paper-terracotta rounded cursor-pointer" />
-            <span>Halo central</span>
-          </label>
-          <span class="text-paper-border">·</span>
-          <button id="btn-recenter-table1" class="text-xs text-paper-terracotta font-medium hover:underline">
-            Centrer sur Table I
-          </button>
-        </div>
-      </div>
-
-      <!-- 螢幕正中央「聚光燈感應區 (Spotlight Focus Zone)」 -->
-      <div id="spotlight-indicator" class="spotlight-ring pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] sm:w-[440px] sm:h-[440px] rounded-full border border-dashed border-paper-terracotta/40 z-10 flex items-end justify-center pb-3" style="background: radial-gradient(circle, rgba(181,99,69,0.045) 0%, rgba(247,243,235,0) 70%);">
-        <span class="px-3 py-0.5 rounded-full bg-paper-bg/90 text-[10px] text-paper-muted tracking-widest uppercase border border-paper-border/80">
-          Zone d’éclosion · 中心聚光開花區
+        <span class="px-3 py-1 rounded-full bg-paper-card/90 backdrop-blur border border-paper-border text-[11px] text-paper-muted font-medium">
+          <span class="lang-fr">Glissez pour explorer</span>
+          <span class="lang-en hidden">Drag to explore</span>
         </span>
       </div>
+
+      <!-- 螢幕正中央「聚光燈感應區」：僅保留優雅呼吸的虛線光環與微光 -->
+      <div id="spotlight-indicator" class="spotlight-ring pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] sm:w-[440px] sm:h-[440px] rounded-full border border-dashed border-paper-terracotta/40 z-10" style="background: radial-gradient(circle, rgba(181,99,69,0.045) 0%, rgba(247,243,235,0) 70%);"></div>
 
       <!-- 2000×1300 無邊界感藝術畫布世界 -->
       <div id="art-world" class="absolute top-0 left-0 w-[2000px] h-[1300px] origin-top-left will-change-transform">
 
-        <!-- 底層：聚落浮水印標題、手繪迷迭香/橄欖枝/蕨類線稿剪影、動態蒲公英種子 -->
+        <!-- 底層：聚落浮水印標題、水墨葉枝 (#botanical-leaf-branch) 與動態蒲公英種子 -->
         <svg id="world-botanical-bg" viewBox="0 0 2000 1300" class="w-full h-full pointer-events-none"></svg>
 
         <!-- 花朵與花苞節點掛載層 -->
@@ -315,31 +325,18 @@
 
       </div>
 
-      <!-- 底部聚落導覽列 (支援定點聚焦與直接點選 4 朵花) -->
-      <div class="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 bg-paper-card/95 backdrop-blur-md border border-paper-border rounded-full px-3 py-1.5 shadow-lg">
-        <button id="btn-focus-cluster" class="px-3.5 py-1.5 rounded-full text-xs font-serif font-semibold bg-paper-ink text-paper-bg shadow-sm transition-all">
-          Table I : Automne &amp; Premières Rencontres
-        </button>
-        <span class="text-paper-border hidden sm:inline">|</span>
-        <button data-goto-flower="0" class="flower-quick-btn px-3 py-1 rounded-full text-xs font-medium text-paper-terracotta hover:bg-paper-panel transition-colors">
-          ❀ No. 01 · Karibu (Kenya)
-        </button>
-        <button data-goto-flower="1" class="flower-quick-btn px-2.5 py-1 rounded-full text-xs text-paper-sage hover:bg-paper-panel transition-colors">
-          🌱 No. 02
-        </button>
-        <button data-goto-flower="2" class="flower-quick-btn px-2.5 py-1 rounded-full text-xs text-paper-sage hover:bg-paper-panel transition-colors">
-          🌱 No. 03
-        </button>
-        <button data-goto-flower="3" class="flower-quick-btn px-2.5 py-1 rounded-full text-xs text-paper-sage hover:bg-paper-panel transition-colors">
-          🌱 No. 04
+      <!-- 3. 左下角極簡聚落導覽 (Minimalist Cluster Capsule) -->
+      <div class="fixed bottom-5 left-5 z-20">
+        <button id="btn-cluster-nav" class="px-4 py-2 rounded-full bg-paper-card/95 backdrop-blur border border-paper-border shadow-md font-serif font-bold text-xs text-paper-ink hover:border-paper-terracotta transition-all flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-paper-terracotta"></span>
+          <span>Table I</span>
         </button>
       </div>
 
     </section>
 
     <!-- =======================================================================
-         右側互動抽屜：故事小卡 (Story Drawer)
-         點擊盛開花朵顯示「肯亞家常饗宴 4 道料理與故事」；點擊待開花苞顯示「手繪花苞與共煮邀約」
+         6 & 7. 右側互動抽屜：故事小卡 (Story Drawer)
          ======================================================================= -->
     <aside id="story-drawer" class="fixed top-[61px] right-0 bottom-0 w-full sm:w-[450px] bg-paper-card/95 backdrop-blur-lg border-l border-paper-border shadow-2xl z-40 translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col justify-between overflow-y-auto">
 
@@ -354,7 +351,7 @@
   </main>
 
   <!-- =========================================================================
-       核心 JavaScript：雞蛋花幾何、自然花苞、肯亞料理紋理、漫遊攝影機與抽屜連動
+       核心 JavaScript：雞蛋花幾何、水墨葉枝、自然花苞、漫遊攝影機與雙語抽屜連動
        ========================================================================= -->
   <script>
     (function () {
@@ -365,66 +362,57 @@
       const CLUSTER_I_CENTER = { x: 930, y: 635 };
 
       // =======================================================================
-      // 1. 後台資料庫 FLOWERS (完整保留雙語與結構化欄位，新增花朵只需加入物件)
-      //    座標彼此距離皆大於 295px (遠高於 230px 下限)，徹底杜絕文字小卡與花朵重疊
+      // 1. 後台資料庫 FLOWERS (完整保留雙語結構，徹底清除不當硬編碼中文)
       // =======================================================================
       const FLOWERS = [
         {
           id: 0,
           num: 'No. 01',
-          status: 'bloom', // 'bloom' (已盛開) | 'bud' (待開花苞)
-          flowerType: 'frangipani', // 5瓣厚實微螺旋雞蛋花
-          season_fr: 'Automne 2026 · Bordeaux',
-          season_en: 'Autumn 2026 · Bordeaux',
+          status: 'bloom',
+          flowerType: 'frangipani',
+          badge_meta: 'No. 01 · Oct 2026',
+          drawer_meta: 'No. 01 · Oct 2026 · Bordeaux',
           worldX: 920,
           worldY: 575,
           scale: 1.08,
           baseRot: -6,
           title_fr: 'Repas traditionnel kényan',
-          title_en: 'Kenyan Home-Cooked Feast',
+          title_en: 'Traditional Kenyan Feast',
           title_zh: '肯亞家常饗宴',
           subtitle_fr: 'Pilau ya Mbuzi, Chapati feuilleté, Kamande & Kabeji',
           subtitle_en: 'Spiced Goat Pilau, Layered Chapati, Brown Lentils & Sautéed Cabbage',
-          flowerSymbol_fr: 'Frangipanier (Plumeria) — Symbole swahili du « Karibu » (hospitalité chaleureuse)',
-          flowerSymbol_en: 'Frangipani (Plumeria) — Swahili symbol of “Karibu” (warm hospitality & trust)',
           quote_fr: '« Entre le parfum de la cardamome pilée et la pâte à chapati roulée à quatre mains, la cuisine est devenue notre langue commune dès la première heure. »',
           quote_en: '“Between the aroma of freshly crushed cardamom and chapati dough rolled out side by side, the kitchen became our shared language from the very first hour.”',
-          quote_zh: '「在現搗小荳蔻的溫熱香氣與並肩手桿薄餅的節奏之間，廚房從第一刻起就成了我們不必翻譯的共同語言。」',
-          story_fr: 'Pour cette toute première fleur du jardin, notre table s’est transformée en un véritable festin familial kényan. Pendant que le Pilau ya Mbuzi mijotait doucement dans un bouillon parfumé au cumin, aux clous de girofle et à la cannelle, nous avons pétri et enroulé la pâte des chapatis en spirale pour créer leur feuilletage doré.\n\nAccompagné d’un ragoût onctueux de lentilles brunes (Kamande) et de chou croquant sauté aux tomates (Kabeji), ce repas partagé a posé la première pierre de ce jardin : la confiance simple née autour du feu.',
-          story_en: 'For the very first flower of this garden, our table blossomed into a generous Kenyan family feast. While the Pilau ya Mbuzi gently simmered in a fragrant broth of crushed cumin, cloves, and cinnamon bark, we kneaded and coiled the chapati dough into spirals to build its flaky golden layers.\n\nPaired with creamy stewed brown lentils (Kamande) and crisp cabbage sautéed with ripe tomatoes (Kabeji), this shared meal laid the cornerstone of our garden: warm trust forged by cooking side by side.',
-          story_zh: '作為花園裡綻放的第一朵花，這晚的餐桌盛開出一席豐盛的肯亞家常饗宴。當香料羊肉飯（Pilau ya Mbuzi）在揉合了小荳蔻、丁香與肉桂的湯汁裡慢火細煨時，我們並肩用雙手揉麵、抹油、捲成螺旋，在平底鍋上烙出一張張外酥內軟的手撕分層薄餅（Chapati）。\n\n佐以濃郁滑順的燉褐扁豆（Kamande）與清爽鮮甜的番茄炒甘藍（Kabeji），雙手揉麵與慢火煨飯所建立的溫暖信任，讓異鄉的秋夜充滿了熱氣與笑聲。',
+          story_fr: 'Pour cette toute première fleur du jardin, notre table s’est transformée en un véritable festin familial kényan.',
+          story_en: 'For the very first flower of this garden, our table blossomed into a generous Kenyan family feast.',
           dishes: [
             {
-              name: 'Pilau ya Mbuzi',
-              desc_fr: 'Riz basmati mijoté à la viande tendre et au mélange d’épices Pilau Masala torréfiées',
-              desc_en: 'Fragrant rice slow-cooked with tender meat & whole roasted Pilau Masala spices',
-              desc_zh: '香料慢煨羊肉飯（現焙綜合香料與焦糖洋蔥慢燉）'
+              name: '慢煨羊肉香料飯 Pilau ya Mbuzi',
+              desc_fr: 'Riz basmati mijoté à la viande tendre et aux épices pilau torréfiées',
+              desc_en: 'Fragrant basmati rice simmered with tender meat & roasted spices'
             },
             {
-              name: 'Kenya Chapati',
-              desc_fr: 'Pain plat doré à la poêle, enroulé en spirale pour un feuilletage souple et croustillant',
-              desc_en: 'Pan-seared flatbread coiled by hand into flaky, tender pull-apart layers',
-              desc_zh: '手撕分層烤薄餅（螺旋捲折工法，外脆內柔韌）'
+              name: '手撕烤薄餅 Kenya Chapati',
+              desc_fr: 'Pain plat doré à la poêle, enroulé en spirale pour un feuilletage souple',
+              desc_en: 'Pan-seared flatbread coiled into soft, layered flaky rounds'
             },
             {
-              name: 'Kamande',
-              desc_fr: 'Lentilles brunes mijotées longuement aux tomates fraîches, ail, gingembre et lait de coco',
-              desc_en: 'Slow-stewed brown lentils in a velvety tomato, ginger, garlic & coconut gravy',
-              desc_zh: '濃郁椰香燉扁豆（番茄、薑蒜與椰奶慢火細熬）'
+              name: '燉扁豆 Kamande',
+              desc_fr: 'Lentilles brunes mijotées aux tomates fraîches, ail, gingembre et lait de coco',
+              desc_en: 'Brown lentils gently stewed with tomatoes, ginger, garlic & coconut milk'
             },
             {
-              name: 'Kabeji',
-              desc_fr: 'Chou vert émincé sauté rapidement aux tomates mûres, oignons doux et coriandre fraîche',
-              desc_en: 'Crisp shredded cabbage flash-sautéed with ripe tomatoes, sweet onions & cilantro',
-              desc_zh: '番茄炒甘藍（保留脆甜口感的家常高麗菜佐新鮮芫荽）'
+              name: '炒甘藍絲 Kabeji',
+              desc_fr: 'Chou vert émincé sauté aux tomates mûres, oignons doux et coriandre',
+              desc_en: 'Shredded cabbage flash-sautéed with tomatoes, sweet onions & cilantro'
             }
           ],
           spices: [
-            { fr: 'Cardamome verte', zh: '綠小荳蔻', en: 'Green Cardamom' },
-            { fr: 'Clous de girofle', zh: '丁香', en: 'Whole Cloves' },
-            { fr: 'Cannelle en bâton', zh: '肉桂皮', en: 'Cinnamon Bark' },
-            { fr: 'Graines de cumin', zh: '小茴香籽', en: 'Cumin Seeds' },
-            { fr: 'Poivre noir & Coriandre', zh: '黑胡椒與芫荽籽', en: 'Black Pepper & Coriander' }
+            { fr: 'Cardamome verte', en: 'Green Cardamom' },
+            { fr: 'Clous de girofle', en: 'Whole Cloves' },
+            { fr: 'Cannelle en bâton', en: 'Cinnamon Bark' },
+            { fr: 'Graines de cumin', en: 'Cumin Seeds' },
+            { fr: 'Poivre noir & Coriandre', en: 'Black Pepper & Coriander' }
           ]
         },
         {
@@ -432,68 +420,62 @@
           num: 'No. 02',
           status: 'bud',
           flowerType: 'bud',
-          season_fr: 'Automne 2026 · Bourgeon en attente',
-          season_en: 'Autumn 2026 · Unopened Bud',
+          badge_meta: 'No. 02 · Table I',
           worldX: 590,
           worldY: 455,
           scale: 0.98,
           baseRot: -12,
           stemCurve: 1,
-          title_fr: 'En attente du 2e repas partagé',
-          title_en: 'Waiting for our 2nd shared meal',
-          title_zh: '等待第 2 場共煮相遇',
-          quote_fr: '« Je te prépare un plat réconfortant de chez moi, et tu m’apprends un plat de chez toi. »',
-          quote_en: '“I make a comforting dish from my home, and you teach me a dish from yours.”',
-          story_fr: 'Cette fleur est encore un bourgeon enveloppé dans ses sépales. Elle attend notre prochaine rencontre au marché et en cuisine pour s’ouvrir avec les couleurs de notre plat et ton histoire.',
-          story_en: 'This flower is still a quiet botanical bud wrapped in green sepals. It is waiting for our next trip to the market and a shared afternoon of cooking to bloom with our dish photo and story.',
-          story_zh: '這朵花目前仍是由深綠花萼緊緊包覆的花苞，正在等待下一場圍繞餐桌的相遇——當我們一起逛市場、並肩做頓飯後，它將帶著料理的色彩盛開。'
+          title_fr: 'En attente du repas partagé',
+          title_en: 'Waiting for our shared meal',
+          subtitle_zh: '等待下一場相遇......',
+          quote_fr: '« Ce jardin n’est pas qu’à moi. Il ne fleurit que si tu me dis oui. »',
+          quote_en: '“This garden isn’t mine alone. It only blooms if you say yes.”',
+          story_fr: 'Chaque bourgeon garde la place pour une rencontre. Clique sur le bouton ci-dessous pour découvrir le déroulement du projet et cuisiner ensemble.',
+          story_en: 'Each bud holds a place for a new culinary encounter. Click below to read how the project works and join me for a home-cooked meal.'
         },
         {
           id: 2,
           num: 'No. 03',
           status: 'bud',
           flowerType: 'bud',
-          season_fr: 'Automne 2026 · Bourgeon en attente',
-          season_en: 'Autumn 2026 · Unopened Bud',
+          badge_meta: 'No. 03 · Table I',
           worldX: 1255,
           worldY: 470,
           scale: 0.96,
           baseRot: 14,
           stemCurve: -1,
-          title_fr: 'En attente du 3e repas partagé',
-          title_en: 'Waiting for our 3rd shared meal',
-          title_zh: '等待第 3 場共煮相遇',
+          title_fr: 'En attente du repas partagé',
+          title_en: 'Waiting for our shared meal',
+          subtitle_zh: '等待下一場相遇......',
           quote_fr: '« Ce jardin n’est pas qu’à moi. Il ne fleurit que si tu me dis oui. »',
           quote_en: '“This garden isn’t mine alone. It only blooms if you say yes.”',
-          story_fr: 'Pas besoin d’être un grand chef ni de parler parfaitement la même langue : la cuisine fait presque tout le travail. Dis-moi oui, et ce bourgeon deviendra notre fleur.',
-          story_en: 'Nobody has to be a professional cook or speak the same language fluently—the food does most of the talking. Say yes, and this bud will blossom into our flower.',
-          story_zh: '不需要是料理高手，也不必擔心語言，食物本身就是最好的橋樑。只要你願意一起下廚，這顆花苞就會綻放成屬於我們的故事。'
+          story_fr: 'Chaque bourgeon garde la place pour une rencontre. Clique sur le bouton ci-dessous pour découvrir le déroulement du projet et cuisiner ensemble.',
+          story_en: 'Each bud holds a place for a new culinary encounter. Click below to read how the project works and join me for a home-cooked meal.'
         },
         {
           id: 3,
           num: 'No. 04',
           status: 'bud',
           flowerType: 'bud',
-          season_fr: 'Automne / Hiver 2026 · Bourgeon',
-          season_en: 'Autumn / Winter 2026 · Unopened Bud',
+          badge_meta: 'No. 04 · Table I',
           worldX: 875,
           worldY: 885,
           scale: 0.95,
           baseRot: 8,
           stemCurve: 1,
-          title_fr: 'En attente du 4e repas partagé',
-          title_en: 'Waiting for our 4th shared meal',
-          title_zh: '等待第 4 場共煮相遇',
-          quote_fr: '« Un marché en journée, deux recettes de famille, et une nouvelle fleur dans l’herbier. »',
-          quote_en: '“A daytime market stroll, two home recipes, and a new flower in the herbarium.”',
-          story_fr: 'Chaque bourgeon de la Table I garde la place pour une rencontre. Clique sur le bouton ci-dessous pour découvrir le déroulement du projet et cuisiner ensemble.',
-          story_en: 'Each bud around Table I holds a place for a new culinary encounter. Click below to read how the project works and join me for a home-cooked meal.',
-          story_zh: 'Table I 聚落裡的每一顆花苞，都預留給一段真實的餐桌相遇。歡迎點擊下方按鈕了解計畫進行方式，與我一起完成下一道家常菜。'
+          title_fr: 'En attente du repas partagé',
+          title_en: 'Waiting for our shared meal',
+          subtitle_zh: '等待下一場相遇......',
+          quote_fr: '« Ce jardin n’est pas qu’à moi. Il ne fleurit que si tu me dis oui. »',
+          quote_en: '“This garden isn’t mine alone. It only blooms if you say yes.”',
+          story_fr: 'Chaque bourgeon garde la place pour une rencontre. Clique sur le bouton ci-dessous pour découvrir le déroulement du projet et cuisiner ensemble.',
+          story_en: 'Each bud holds a place for a new culinary encounter. Click below to read how the project works and join me for a home-cooked meal.'
         }
       ];
 
       // =======================================================================
-      // 2. 全域狀態管理 (Camera, Spotlight, Language & Drawer State)
+      // 2. 全域狀態管理
       // =======================================================================
       const state = {
         lang: 'fr',
@@ -501,7 +483,6 @@
         hoveredFlowerId: null,
         drawerOpen: false,
 
-        // 漫遊攝影機狀態
         camX: 0,
         camY: 0,
         targetCamX: 0,
@@ -513,7 +494,6 @@
         camStartY: 0,
         hasMovedDuringDrag: false,
 
-        // 花朵綻放動畫進度 (No.01 在聚光燈內平滑綻放至 1.0)
         flowers: FLOWERS.map((f) => ({
           id: f.id,
           currentBloom: f.status === 'bloom' ? 0.35 : 0,
@@ -529,7 +509,7 @@
       }
 
       // =======================================================================
-      // 3. 幾何路徑建構：5 瓣厚實圓潤微螺旋「雞蛋花 (Frangipani)」與「自然植物花苞」
+      // 3. 幾何路徑建構：5 瓣厚實圓潤微螺旋「雞蛋花 (Frangipani)」
       // =======================================================================
       function ptWorld(lx, ly, deg, scale = 1) {
         const sx = lx * scale;
@@ -542,8 +522,6 @@
         return `${wx.toFixed(1)},${wy.toFixed(1)}`;
       }
 
-      // 雞蛋花 (Frangipani / Plumeria) 5 片厚實、圓潤、微螺旋非對稱交疊的花瓣路徑
-      // 右側弧線略微外擴、左側收束，使 5 片花瓣順時針呈風車狀優雅重疊
       function buildFrangipaniPetalPath(angleDeg, inset = 1.0) {
         const p = (x, y) => ptWorld(x, y, angleDeg, inset);
         return [
@@ -555,7 +533,6 @@
         ].join(' ');
       }
 
-      // 雞蛋花內部細膩羽狀手繪葉脈墨線
       function buildFrangipaniVeins(angleDeg) {
         const p = (x, y) => ptWorld(x, y, angleDeg, 1.0);
         return [
@@ -567,7 +544,6 @@
         ].join(' ');
       }
 
-      // 初始化全域 5 片雞蛋花瓣的 <clipPath> (內縮 0.965 保留溫潤水彩紙白邊)
       function initGlobalFrangipaniClips() {
         const defs = document.getElementById('global-flower-defs');
         let clipsHTML = '';
@@ -579,7 +555,6 @@
         defs.insertAdjacentHTML('beforeend', clipsHTML);
       }
 
-      // 雞蛋花中心螺旋交疊鋼筆墨線與小蕊點
       function buildFrangipaniCenterMarkup() {
         let spiralLines = '';
         for (let i = 0; i < 5; i++) {
@@ -596,8 +571,7 @@
       }
 
       // =======================================================================
-      // 4. 生成「肯亞家常饗宴 (4 道料理)」空拍餐桌攝影質感紋理 (Canvas Procedural Texture)
-      //    呈現：Pilau 琥珀香料羊肉飯、Chapati 金黃螺旋烤薄餅、Kamande 濃郁扁豆與 Kabeji 翠綠高麗菜
+      // 4. 生成「肯亞家常饗宴 (4 道料理)」空拍餐桌質感紋理
       // =======================================================================
       function generateKenyanFeastPhotoTexture() {
         const canvas = document.createElement('canvas');
@@ -605,7 +579,6 @@
         canvas.height = 520;
         const ctx = canvas.getContext('2d');
 
-        // 1. 溫暖亞麻桌巾與木桌底色
         const bgGrad = ctx.createRadialGradient(260, 260, 30, 260, 260, 260);
         bgGrad.addColorStop(0, '#F5E6CE');
         bgGrad.addColorStop(0.65, '#C88A56');
@@ -613,26 +586,19 @@
         ctx.fillStyle = bgGrad;
         ctx.fillRect(0, 0, 520, 520);
 
-        // 2. 四道料理分區餐盤與色澤構圖 (空拍俯視饗宴)
         const platters = [
-          // 左上：Pilau ya Mbuzi (深琥珀香料飯與嫩羊肉塊)
           { x: 185, y: 185, r: 108, base: '#9C4D2B', highlight: '#D98B4E', rim: '#F2E3CE' },
-          // 右上：Kenya Chapati (金黃烙痕螺旋手撕薄餅)
           { x: 340, y: 190, r: 98, base: '#E0A458', highlight: '#FCE6BA', rim: '#EAD7BE' },
-          // 左下：Kamande (濃郁赤褐椰香燉扁豆)
           { x: 195, y: 335, r: 94, base: '#8B3E26', highlight: '#C96A3B', rim: '#F0DFC8' },
-          // 右下：Kabeji (鮮綠甘藍與紅番茄家常小炒)
           { x: 335, y: 335, r: 92, base: '#5A7D4C', highlight: '#9EC47E', rim: '#EFE2CE' }
         ];
 
         platters.forEach((pl) => {
-          // 陶盤邊緣
           ctx.beginPath();
           ctx.arc(pl.x, pl.y, pl.r + 6, 0, Math.PI * 2);
           ctx.fillStyle = pl.rim;
           ctx.fill();
 
-          // 料理基底漸層
           const g = ctx.createRadialGradient(pl.x - 15, pl.y - 15, 8, pl.x, pl.y, pl.r);
           g.addColorStop(0, pl.highlight);
           g.addColorStop(0.7, pl.base);
@@ -643,7 +609,7 @@
           ctx.fill();
         });
 
-        // 3. 繪製 Chapati 的螺旋分層烤痕 (右上盤)
+        // Chapati 螺旋烙痕
         ctx.save();
         ctx.strokeStyle = 'rgba(122, 62, 24, 0.55)';
         ctx.lineWidth = 3.2;
@@ -652,7 +618,6 @@
           ctx.arc(340, 190, r, 0.2, Math.PI * 1.75);
           ctx.stroke();
         }
-        // 烙餅焦香斑點
         for (let i = 0; i < 18; i++) {
           const a = (i * 137.5 * Math.PI) / 180;
           const d = 12 + (i % 5) * 14;
@@ -663,7 +628,7 @@
         }
         ctx.restore();
 
-        // 4. 繪製 Pilau 香料飯米粒、慢燉羊肉與小荳蔻/丁香顆粒 (左上盤)
+        // Pilau 香料飯與羊肉
         ctx.save();
         for (let i = 0; i < 42; i++) {
           const a = (i * 137.5 * Math.PI) / 180;
@@ -677,18 +642,16 @@
         }
         ctx.restore();
 
-        // 5. 繪製 Kamande 濃郁扁豆與 Kabeji 翠綠高麗菜番茄點綴 (下兩盤)
+        // Kamande 扁豆與 Kabeji 甘藍番茄
         ctx.save();
         for (let i = 0; i < 28; i++) {
           const a = (i * 137.5 * Math.PI) / 180;
           const d = Math.sqrt(i) * 14;
-          // Kamande 扁豆與香菜
           ctx.fillStyle = i % 4 === 0 ? 'rgba(82, 130, 68, 0.75)' : 'rgba(235, 148, 82, 0.6)';
           ctx.beginPath();
           ctx.arc(195 + Math.cos(a) * d, 335 + Math.sin(a) * d, 4.5, 0, Math.PI * 2);
           ctx.fill();
 
-          // Kabeji 番茄丁與高麗菜絲
           ctx.fillStyle = i % 3 === 0 ? 'rgba(218, 68, 48, 0.85)' : 'rgba(235, 248, 215, 0.65)';
           ctx.beginPath();
           ctx.ellipse(335 + Math.cos(a) * d, 335 + Math.sin(a) * d, 7, 3.2, i * 0.7, 0, Math.PI * 2);
@@ -700,10 +663,11 @@
       }
 
       // =======================================================================
-      // 5. 建立單朵花 SVG：區分「No.01 盛開雞蛋花」與「No.02~04 自然植物花苞」
+      // 5. 建立單朵花 SVG：
+      //    (A) 第 1 朵盛開雞蛋花：背後僅在左下單側使用 <use href="#botanical-leaf-branch" />
+      //        (rotate(-35deg) scale(0.42)) 自然探出半枝，打破呆板對稱
+      //    (B) 第 2~4 朵待開花苞：深綠立體花萼包覆 + 橢圓水滴狀緊縮花冠 + 花莖
       // =======================================================================
-
-      // (A) 第 1 朵盛開之花：5 瓣厚實圓潤微螺旋雞蛋花 (Frangipani)
       function createBloomedFrangipaniSVG(flower) {
         const photoUrl = state.flowers[flower.id].photoDataUrl;
         let petalsHTML = '';
@@ -715,15 +679,11 @@
 
           petalsHTML += `
             <g id="world-petal-${flower.id}-${i}" class="petal-unit" filter="url(#soft-petal-shadow)">
-              <!-- 宣紙底層留白邊 -->
               <path d="${outline}" fill="#FAF7F2"/>
-              <!-- 肯亞家常饗宴單張照片共享座標裁切層 -->
               <g clip-path="url(#frangipani-clip-${i})" class="world-photo-layer-${flower.id}">
                 <image class="dish-svg-image-${flower.id}" href="${photoUrl}" x="22" y="22" width="256" height="256" preserveAspectRatio="xMidYMid slice"/>
               </g>
-              <!-- 雞蛋花中心暖金漸層柔光 -->
               <path d="${outline}" fill="url(#frangipani-warm-core)" opacity="0.55"/>
-              <!-- 鋼筆墨線外框 (stroke-width: 2.1 + mix-blend-mode: multiply) -->
               <g class="ink-multiply">
                 <path d="${outline}" fill="none" stroke="#221F1D" stroke-width="2.1" stroke-linejoin="round"/>
                 <path d="${veins}" fill="none" stroke="#221F1D" stroke-width="1.05" stroke-linecap="round" stroke-opacity="0.72"/>
@@ -734,16 +694,9 @@
 
         return `
           <svg viewBox="0 0 300 300" class="w-full h-full overflow-visible">
-            <!-- 底層手繪草本葉片與花莖線稿 (非生硬黑塊，具植物圖鑑筆觸) -->
-            <g style="transform-origin: 150px 150px; transform: rotate(${flower.baseRot}deg);">
-              <!-- 花莖 -->
-              <path d="M150,168 Q144,225 152,276" fill="none" stroke="#221F1D" stroke-width="2.6" stroke-linecap="round" opacity="0.75"/>
-              <!-- 左側手繪雞蛋花長橢圓葉片線稿 -->
-              <path d="M150,150 C104,126 62,92 38,54 C72,60 114,88 150,150 Z" fill="#4A5D4E" fill-opacity="0.22" stroke="#221F1D" stroke-width="1.6"/>
-              <path d="M142,142 Q90,100 44,58" fill="none" stroke="#221F1D" stroke-width="1.1" opacity="0.65"/>
-              <!-- 右側手繪葉片線稿 -->
-              <path d="M150,150 C196,126 236,94 258,58 C224,64 184,92 150,150 Z" fill="#4A5D4E" fill-opacity="0.22" stroke="#221F1D" stroke-width="1.6"/>
-              <path d="M158,142 Q206,102 252,62" fill="none" stroke="#221F1D" stroke-width="1.1" opacity="0.65"/>
+            <!-- 雞蛋花背後：僅在左下單側 (rotate(-35deg) scale(0.42)) 自然探出半枝無彩色水墨葉枝 -->
+            <g style="transform: translate(12px, 118px) rotate(-35deg) scale(0.42); transform-origin: 0 0;">
+              <use href="#botanical-leaf-branch" />
             </g>
 
             <!-- 盛開後向兩側微退的深綠花萼 -->
@@ -763,9 +716,6 @@
         `;
       }
 
-      // (B) 待開花苞 (No. 02, No. 03, No. 04)：
-      //     絕不等比例縮小花瓣！採用自然植物花苞形態：
-      //     外層 3 片深綠色立體花萼向上合攏包覆 + 橢圓水滴狀緊縮未開花冠 + 向上延伸的花莖與小托葉 (花蕊完全隱藏)
       function createNaturalBotanicalBudSVG(flower) {
         const dir = flower.stemCurve || 1;
         return `
@@ -775,11 +725,10 @@
               <!-- 懸停時背後透出的溫暖微光 -->
               <circle class="bud-inner-glow" cx="150" cy="132" r="54" fill="url(#bud-warm-glow)" />
 
-              <!-- 1. 下方自然向上延伸的手繪花莖與兩片小側葉 -->
+              <!-- 1. 下方自然向上延伸的花莖與側葉 -->
               <path d="M150,180 Q${150 - dir * 10},222 ${150 + dir * 6},264" fill="none" stroke="#221F1D" stroke-width="2.6" stroke-linecap="round"/>
               <path d="M150,180 Q${150 - dir * 10},222 ${150 + dir * 6},264" fill="none" stroke="#4A5D4E" stroke-width="1.4" stroke-linecap="round" opacity="0.7"/>
 
-              <!-- 莖上小嫩葉 (左/右) -->
               <path d="M${148 - dir * 4},218 C${122 - dir * 4},212 108,196 116,184 C132,188 144,204 ${148 - dir * 4},218 Z"
                     fill="#4A5D4E" fill-opacity="0.38" stroke="#221F1D" stroke-width="1.6" stroke-linejoin="round"/>
               <path d="M${148 - dir * 4},218 Q128,202 118,187" fill="none" stroke="#221F1D" stroke-width="0.9" opacity="0.7"/>
@@ -787,21 +736,18 @@
               <path d="M${151 - dir * 2},232 C${176 - dir * 2},224 190,208 182,196 C166,200 156,216 ${151 - dir * 2},232 Z"
                     fill="#4A5D4E" fill-opacity="0.32" stroke="#221F1D" stroke-width="1.5" stroke-linejoin="round"/>
 
-              <!-- 2. 緊縮未開的橢圓水滴狀花冠 (Furled Teardrop Petals, 花蕊隱藏不露) -->
+              <!-- 2. 緊縮未開的橢圓水滴狀花冠 (花蕊隱藏不露) -->
               <path d="M150,76 C122,100 114,142 128,172 C136,184 164,184 172,172 C186,142 178,100 150,76 Z"
                     fill="#FAF7F2" stroke="#221F1D" stroke-width="2.1" stroke-linejoin="round"/>
 
-              <!-- 花苞尖端淡淡的陶土胭脂色澤 -->
               <path d="M150,78 C134,96 128,120 134,142 C146,128 158,128 166,142 C172,120 166,96 150,78 Z"
                     fill="#B56345" fill-opacity="0.18"/>
 
-              <!-- 花苞內部螺旋緊裹的鋼筆摺線 (表現花瓣尚未展開的捲曲張力) -->
               <path d="M150,77 C140,108 138,142 146,174" fill="none" stroke="#221F1D" stroke-width="1.5" stroke-linecap="round"/>
               <path d="M150,77 C162,104 160,138 152,172" fill="none" stroke="#221F1D" stroke-width="1.25" stroke-linecap="round" opacity="0.8"/>
               <path d="M136,98 C146,118 152,144 149,170" fill="none" stroke="#221F1D" stroke-width="0.95" stroke-linecap="round" opacity="0.55"/>
 
-              <!-- 3. 外層 3 片深綠色立體花萼 (Sepals) 向上合攏包覆花苞底部與兩側 -->
-              <!-- 左花萼 -->
+              <!-- 3. 外層 3 片深綠色立體花萼 (Sepals) 向上合攏包覆 -->
               <path class="bud-sepal-left"
                     d="M150,182 C120,174 106,140 120,102 C126,128 136,154 150,174 Z"
                     fill="#4A5D4E" stroke="#221F1D" stroke-width="2.0" stroke-linejoin="round"/>
@@ -809,7 +755,6 @@
                     d="M146,174 Q126,148 121,110"
                     fill="none" stroke="#221F1D" stroke-width="0.95" opacity="0.6"/>
 
-              <!-- 右花萼 -->
               <path class="bud-sepal-right"
                     d="M150,182 C180,174 194,140 180,102 C174,128 164,154 150,174 Z"
                     fill="#3F5143" stroke="#221F1D" stroke-width="2.0" stroke-linejoin="round"/>
@@ -817,7 +762,6 @@
                     d="M154,174 Q174,148 179,110"
                     fill="none" stroke="#221F1D" stroke-width="0.95" opacity="0.6"/>
 
-              <!-- 中央前側小花萼與花托 (Receptacle) -->
               <path d="M150,185 C138,176 138,150 150,130 C162,150 162,176 150,185 Z"
                     fill="#586D5C" stroke="#221F1D" stroke-width="1.9" stroke-linejoin="round"/>
               <ellipse cx="150" cy="182" rx="9" ry="5.5" fill="#3A4A3E" stroke="#221F1D" stroke-width="1.8"/>
@@ -828,58 +772,12 @@
       }
 
       // =======================================================================
-      // 6. 建置畫布底層：聚落標題浮水印、精緻手繪香草線稿剪影 (0.35~0.55) 與動態蒲公英
+      // 6. 建置畫布底層：雙語浮水印標題、3 枝輕透水墨葉枝 (opacity: 0.22) 與動態蒲公英
       // =======================================================================
       function buildWorldBotanicalBackground() {
         const svg = document.getElementById('world-botanical-bg');
 
-        // 手繪迷迭香枝 (Rosemary)、橄欖葉枝 (Olive Branch) 與羽狀蕨類 (Fern) 線稿剪影
-        const rosemaryBranch = (x, y, rot, sc, op) => `
-          <g transform="translate(${x}, ${y}) rotate(${rot}) scale(${sc})" opacity="${op}">
-            <path d="M0,140 Q-8,60 12,-50" fill="none" stroke="#221F1D" stroke-width="1.6" stroke-linecap="round"/>
-            ${[-30, -10, 12, 34, 56, 78, 100].map((py, i) => `
-              <path d="M${(i % 2 === 0 ? 2 : 0)},${py} C${-18},${py - 14} ${-28},${py - 28} ${-20},${py - 34} C${-10},${py - 28} ${-2},${py - 12} ${(i % 2 === 0 ? 2 : 0)},${py} Z"
-                    fill="#4A5D4E" fill-opacity="0.22" stroke="#221F1D" stroke-width="1.15"/>
-              <path d="M${(i % 2 === 0 ? 3 : 1)},${py - 4} C${22},${py - 18} ${32},${py - 30} ${24},${py - 36} C${14},${py - 30} ${6},${py - 14} ${(i % 2 === 0 ? 3 : 1)},${py - 4} Z"
-                    fill="#4A5D4E" fill-opacity="0.22" stroke="#221F1D" stroke-width="1.15"/>
-            `).join('')}
-          </g>
-        `;
-
-        const oliveBranch = (x, y, rot, sc, op) => `
-          <g transform="translate(${x}, ${y}) rotate(${rot}) scale(${sc})" opacity="${op}">
-            <path d="M0,150 C-15,75 10,0 35,-65" fill="none" stroke="#221F1D" stroke-width="1.5" stroke-linecap="round"/>
-            ${[
-              { bx: 0, by: 105, lx: -42, ly: 78 },
-              { bx: 4, by: 65, lx: 48, ly: 38 },
-              { bx: 10, by: 25, lx: -34, ly: -5 },
-              { bx: 18, by: -15, lx: 56, ly: -40 },
-              { bx: 28, by: -48, lx: -12, ly: -78 }
-            ].map((leaf) => `
-              <path d="M${leaf.bx},${leaf.by} Q${(leaf.bx + leaf.lx) / 2 - 10},${(leaf.by + leaf.ly) / 2 - 12} ${leaf.lx},${leaf.ly} Q${(leaf.bx + leaf.lx) / 2 + 10},${(leaf.by + leaf.ly) / 2 + 8} ${leaf.bx},${leaf.by} Z"
-                    fill="#4A5D4E" fill-opacity="0.16" stroke="#221F1D" stroke-width="1.25"/>
-              <path d="M${leaf.bx},${leaf.by} L${leaf.lx},${leaf.ly}" fill="none" stroke="#221F1D" stroke-width="0.75" opacity="0.7"/>
-            `).join('')}
-          </g>
-        `;
-
-        const delicateFern = (x, y, rot, sc, op) => `
-          <g transform="translate(${x}, ${y}) rotate(${rot}) scale(${sc})" opacity="${op}">
-            <path d="M0,130 Q-12,50 -35,-45" fill="none" stroke="#221F1D" stroke-width="1.4" stroke-linecap="round"/>
-            ${[100, 74, 48, 22, -4, -28].map((fy, idx) => {
-              const w = 32 - idx * 3.5;
-              const ox = -idx * 5;
-              return `
-                <path d="M${ox},${fy} C${ox - w},${fy - 4} ${ox - w * 1.2},${fy - 16} ${ox - w * 0.7},${fy - 22} C${ox - w * 0.3},${fy - 14} ${ox - 4},${fy - 6} ${ox},${fy} Z"
-                      fill="none" stroke="#221F1D" stroke-width="1.15"/>
-                <path d="M${ox},${fy - 4} C${ox + w * 0.8},${fy - 12} ${ox + w},${fy - 24} ${ox + w * 0.5},${fy - 28} C${ox + w * 0.2},${fy - 20} ${ox + 3},${fy - 10} ${ox},${fy - 4} Z"
-                      fill="none" stroke="#221F1D" stroke-width="1.15"/>
-              `;
-            }).join('')}
-          </g>
-        `;
-
-        // 14 顆手繪蒲公英絨毛種子 (requestAnimationFrame 正弦漂浮與微幅擺動)
+        // 14 顆手繪蒲公英絨毛種子
         const seedCoords = [
           { x: 480, y: 340 }, { x: 740, y: 310 }, { x: 1080, y: 330 }, { x: 1380, y: 390 },
           { x: 430, y: 640 }, { x: 730, y: 690 }, { x: 1120, y: 670 }, { x: 1420, y: 680 },
@@ -904,28 +802,39 @@
           <circle cx="920" cy="615" r="420" fill="#EFE9DE" fill-opacity="0.55" />
           <circle cx="920" cy="615" r="365" fill="none" stroke="#DDD3C4" stroke-width="1.2" stroke-dasharray="6 8" />
 
-          <!-- 連結 4 朵花的優雅手繪植物虛線藤蔓 -->
+          <!-- 連結 4 朵花的優雅虛線軌跡 -->
           <path d="M590,455 C720,490 790,545 920,575 C1060,545 1135,500 1255,470" fill="none" stroke="#C8BBA8" stroke-width="1.5" stroke-dasharray="5 7" />
           <path d="M920,575 Q895,730 875,885" fill="none" stroke="#C8BBA8" stroke-width="1.5" stroke-dasharray="5 7" />
 
-          <!-- 聚落 I 浮水印主標與英文副標 -->
-          <g transform="translate(920, 225)" text-anchor="middle">
-            <text x="0" y="0" font-family="'Cormorant Garamond', 'Noto Serif TC', serif" font-size="34" font-weight="600" fill="#221F1D" letter-spacing="0.02em">
-              Table I : Automne &amp; Premières Rencontres
-            </text>
-            <text x="0" y="28" font-family="'Cormorant Garamond', Georgia, serif" font-size="18.5" font-style="italic" fill="#786F66" letter-spacing="0.03em">
-              Four shared meals, warmth and trust around the table.
-            </text>
-            <line x1="-85" y1="44" x2="85" y2="44" stroke="#B56345" stroke-width="1" stroke-opacity="0.45" />
+          <!-- 畫布底層背景：3 枝輕透無彩色水墨葉枝 (opacity: 0.22)，營造古典植物圖鑑留白美 -->
+          <g transform="translate(370, 520) rotate(-32) scale(0.36)" opacity="0.22">
+            <use href="#botanical-leaf-branch" />
+          </g>
+          <g transform="translate(1390, 520) rotate(28) scale(0.38)" opacity="0.22">
+            <use href="#botanical-leaf-branch" />
+          </g>
+          <g transform="translate(1080, 810) rotate(42) scale(0.32)" opacity="0.22">
+            <use href="#botanical-leaf-branch" />
           </g>
 
-          <!-- 手繪草本與香草枝葉線稿剪影 (透明度 0.35 ~ 0.52) -->
-          ${rosemaryBranch(440, 560, -28, 1.05, 0.45)}
-          ${oliveBranch(1385, 595, 24, 1.08, 0.46)}
-          ${delicateFern(690, 835, -36, 1.0, 0.40)}
-          ${oliveBranch(1140, 855, 38, 0.96, 0.42)}
-          ${rosemaryBranch(755, 330, 48, 0.85, 0.36)}
-          ${delicateFern(1105, 335, -42, 0.88, 0.38)}
+          <!-- 5. 畫布浮水印文字 (支援 FR / EN 雙語切換) -->
+          <g transform="translate(920, 225)" text-anchor="middle">
+            <text x="0" y="0" class="lang-fr" font-family="'Cormorant Garamond', 'Noto Serif TC', serif" font-size="34" font-weight="600" fill="#221F1D" letter-spacing="0.02em">
+              Table I : Automne &amp; Premières Rencontres
+            </text>
+            <text x="0" y="0" class="lang-en hidden" font-family="'Cormorant Garamond', 'Noto Serif TC', serif" font-size="34" font-weight="600" fill="#221F1D" letter-spacing="0.02em">
+              Table I : Autumn &amp; First Encounter
+            </text>
+
+            <text x="0" y="28" class="lang-fr" font-family="'Cormorant Garamond', Georgia, serif" font-size="18.5" font-style="italic" fill="#786F66" letter-spacing="0.03em">
+              Notre voyage commence ici.
+            </text>
+            <text x="0" y="28" class="lang-en hidden" font-family="'Cormorant Garamond', Georgia, serif" font-size="18.5" font-style="italic" fill="#786F66" letter-spacing="0.03em">
+              Our journey begins here.
+            </text>
+
+            <line x1="-85" y1="44" x2="85" y2="44" stroke="#B56345" stroke-width="1" stroke-opacity="0.45" />
+          </g>
 
           <!-- 動態漂浮蒲公英絨毛種子 -->
           ${seedsHTML}
@@ -933,7 +842,7 @@
       }
 
       // =======================================================================
-      // 7. 掛載 4 朵花節點與獨立宣紙毛玻璃浮動文字小卡 (Floating Caption Badge)
+      // 7. 掛載 4 朵花節點與獨立宣紙毛玻璃浮動文字小卡 (徹底清除寫死中文)
       // =======================================================================
       function mountGardenFlowers() {
         const layer = document.getElementById('world-flowers-layer');
@@ -952,19 +861,15 @@
             ? createBloomedFrangipaniSVG(flower)
             : createNaturalBotanicalBudSVG(flower);
 
-          const badgeTitle = isBloom
-            ? `${flower.title_zh} · <span class="font-serif italic font-normal">${flower.title_fr}</span>`
-            : `<span class="lang-fr">${flower.title_fr}</span><span class="lang-en hidden">${flower.title_en}</span>`;
-
           const promptHTML = isBloom
             ? `<div class="text-[11px] text-paper-terracotta font-medium mt-1 flex items-center justify-center gap-1">
                  <span class="w-1.5 h-1.5 rounded-full bg-paper-terracotta animate-ping"></span>
-                 <span class="lang-fr">Découvrir l’histoire · 點擊展開故事 →</span>
-                 <span class="lang-en hidden">Read story · 點擊展開故事 →</span>
+                 <span class="lang-fr">Découvrir l’histoire →</span>
+                 <span class="lang-en hidden">Read story →</span>
                </div>`
             : `<div class="text-[11px] text-paper-sage font-medium mt-0.5 opacity-80 group-hover:opacity-100 group-hover:text-paper-terracotta transition-all">
-                 <span class="lang-fr">Bourgeon · Cuisiner ensemble →</span>
-                 <span class="lang-en hidden">Bud · Cook together →</span>
+                 <span class="lang-fr">Cuisiner ensemble →</span>
+                 <span class="lang-en hidden">Cook together →</span>
                </div>`;
 
           node.innerHTML = `
@@ -972,16 +877,15 @@
               ${svgMarkup}
             </div>
 
-            <!-- 獨立宣紙毛玻璃質感浮動文字小卡 (Floating Caption Badge) -->
+            <!-- 獨立宣紙毛玻璃質感浮動文字小卡 -->
             <div id="world-label-${flower.id}"
                  class="-mt-2 px-4 py-2 rounded-2xl bg-paper-card/95 backdrop-blur border border-paper-border shadow-md text-center transition-all duration-300 group-hover:border-paper-terracotta group-hover:shadow-lg min-w-[215px]">
-              <div class="flex items-center justify-center gap-1.5 text-[11px] text-paper-muted">
-                <span class="font-serif italic font-bold text-paper-terracotta text-xs">${flower.num}</span>
-                <span>·</span>
-                <span>${isBloom ? 'Automne 2026' : 'Table I'}</span>
+              <div class="text-[11px] text-paper-muted font-serif italic">
+                ${flower.badge_meta}
               </div>
               <div class="font-serif text-sm font-semibold text-paper-ink mt-0.5 leading-snug">
-                ${badgeTitle}
+                <span class="lang-fr">${flower.title_fr}</span>
+                <span class="lang-en hidden">${flower.title_en}</span>
               </div>
               ${promptHTML}
             </div>
@@ -1005,7 +909,7 @@
       }
 
       // =======================================================================
-      // 8. 雞蛋花 3D 透視螺旋綻放渲染器 (供盛開之花使用)
+      // 8. 雞蛋花 3D 透視螺旋綻放渲染器
       // =======================================================================
       function easeOutBack(t) {
         const c1 = 1.28;
@@ -1016,7 +920,6 @@
       function applyFrangipaniBloom(flower, bloomProgress) {
         if (flower.status !== 'bloom') return;
 
-        // 1. 花萼外翻
         const sepalL = document.getElementById(`world-sepal-l-${flower.id}`);
         const sepalR = document.getElementById(`world-sepal-r-${flower.id}`);
         if (sepalL && sepalR) {
@@ -1028,13 +931,11 @@
           sepalR.style.transform = `rotate(${rotR.toFixed(1)}deg) scale(${sc.toFixed(2)})`;
         }
 
-        // 2. 照片顯色度平滑過渡
         const colorFactor = clamp((bloomProgress - 0.18) / 0.72, 0, 1);
         document.querySelectorAll(`.world-photo-layer-${flower.id}`).forEach((layer) => {
           layer.style.opacity = (0.18 + 0.82 * colorFactor).toFixed(2);
         });
 
-        // 3. 5 片雞蛋花瓣依序螺旋展開 + 微風輕擺
         for (let i = 0; i < 5; i++) {
           const petalEl = document.getElementById(`world-petal-${flower.id}-${i}`);
           if (!petalEl) continue;
@@ -1052,7 +953,6 @@
           petalEl.style.transform = `rotate(${rot.toFixed(2)}deg) scale(${sx.toFixed(3)}, ${sy.toFixed(3)})`;
         }
 
-        // 4. 中心花蕊與螺旋墨線
         const stamenEl = document.getElementById(`world-stamen-${flower.id}`);
         if (stamenEl) {
           const stP = clamp((bloomProgress - 0.25) / 0.75, 0, 1);
@@ -1073,7 +973,6 @@
         const drawer = document.getElementById('story-drawer');
         drawer.classList.remove('translate-x-full');
 
-        // 抽屜展開時，攝影機自動將目標花朵置於畫面中央偏左 120px，避免被抽屜遮擋
         centerCameraOnFlower(flowerId, true);
       }
 
@@ -1102,8 +1001,7 @@
               </span>
               <div>
                 <div class="font-serif font-bold text-sm text-paper-ink">${d.name}</div>
-                <div class="text-xs text-paper-dark mt-0.5">${d.desc_zh}</div>
-                <div class="text-[11px] text-paper-muted italic mt-0.5">
+                <div class="text-xs text-paper-muted italic mt-0.5">
                   <span class="lang-fr">${d.desc_fr}</span>
                   <span class="lang-en hidden">${d.desc_en}</span>
                 </div>
@@ -1115,155 +1013,123 @@
             <span class="px-2.5 py-1 rounded-full bg-paper-panel border border-paper-border text-xs text-paper-dark font-medium">
               <span class="lang-fr">${sp.fr}</span>
               <span class="lang-en hidden">${sp.en}</span>
-              <span class="text-paper-muted">· ${sp.zh}</span>
             </span>
           `).join('');
 
           bodyEl.innerHTML = `
-            <!-- 抽屜頂部列 -->
+            <!-- 頂部標籤：雙語皆為 No. 01 · Oct 2026 · Bordeaux -->
             <div class="flex items-center justify-between gap-2 pb-3.5 border-b border-paper-border">
-              <div class="flex items-center gap-2">
-                <span class="font-serif italic text-lg font-bold text-paper-terracotta">${flower.num}</span>
-                <span class="px-2.5 py-0.5 rounded-full text-[11px] bg-paper-panel text-paper-dark font-medium">
-                  ${flower.season_fr}
-                </span>
-              </div>
-              <button id="btn-close-drawer" class="p-1.5 rounded-full hover:bg-paper-panel text-paper-muted hover:text-paper-ink transition-colors" aria-label="Fermer">
+              <span class="font-serif italic text-sm font-semibold text-paper-terracotta">
+                ${flower.drawer_meta}
+              </span>
+              <button id="btn-close-drawer" class="p-1.5 rounded-full hover:bg-paper-panel text-paper-muted hover:text-paper-ink transition-colors" aria-label="Close">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
 
-            <!-- 頂部圓盤料理全貌預覽 (Hover 時雞蛋花墨線花蕊柔化退開) -->
+            <!-- 頂部圓盤料理全貌預覽 (已移除圓盤 Hover 提示文字) -->
             <div class="mt-5 flex flex-col items-center">
-              <div class="relative w-60 h-60 rounded-2xl bg-paper-bg border border-paper-border p-3 flex flex-col items-center justify-center shadow-inner plate-morph-container">
+              <div class="relative w-56 h-56 rounded-2xl bg-paper-bg border border-paper-border p-3 flex items-center justify-center shadow-inner plate-morph-container">
                 <div class="relative w-48 h-48 rounded-full overflow-hidden shadow-md border-2 border-paper-ink/20">
                   <img src="${photoUrl}" alt="${flower.title_fr}" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
                   <svg viewBox="0 0 300 300" class="plate-stamen-overlay absolute inset-0 w-full h-full pointer-events-none opacity-30">
                     ${buildFrangipaniCenterMarkup()}
                   </svg>
                 </div>
-                <span class="mt-2 text-[11px] text-paper-muted text-center">
-                  ✨ 滑鼠移至圓盤，花心墨線即柔化退開呈現完整饗宴
-                </span>
               </div>
             </div>
 
-            <!-- 花型象徵與料理主標 -->
+            <!-- 料理主標題、副標題與引言 (已移除花型象徵徽章與長篇故事本文) -->
             <div class="mt-5">
-              <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-paper-sage/10 text-paper-sage text-[11px] font-medium mb-2">
-                <span>❀</span>
-                <span class="lang-fr">${flower.flowerSymbol_fr}</span>
-                <span class="lang-en hidden">${flower.flowerSymbol_en}</span>
-              </div>
-
               <h2 class="font-serif text-2xl sm:text-[26px] font-bold text-paper-ink leading-tight">
-                ${flower.title_fr}
+                <span class="lang-fr">${flower.title_fr} ${flower.title_zh}</span>
+                <span class="lang-en hidden">${flower.title_en} ${flower.title_zh}</span>
               </h2>
-              <p class="font-serif text-base text-paper-terracotta font-semibold mt-0.5">
-                ${flower.title_zh} · <span class="italic font-normal text-paper-muted">${flower.title_en}</span>
+              <p class="font-serif italic text-sm text-paper-muted mt-1">
+                <span class="lang-fr">${flower.subtitle_fr}</span>
+                <span class="lang-en hidden">${flower.subtitle_en}</span>
               </p>
 
-              <!-- 餐桌記憶引言 -->
-              <blockquote class="mt-4 p-3.5 rounded-xl bg-paper-bg border-l-4 border-paper-terracotta text-xs sm:text-sm text-paper-dark leading-relaxed">
-                <p class="font-serif italic text-sm text-paper-ink mb-1">
+              <!-- 餐桌引言 (Quote) -->
+              <blockquote class="mt-4 p-3.5 rounded-xl bg-paper-bg border-l-4 border-paper-terracotta">
+                <p class="font-serif italic text-sm text-paper-ink leading-relaxed">
                   <span class="lang-fr">${flower.quote_fr}</span>
                   <span class="lang-en hidden">${flower.quote_en}</span>
                 </p>
-                <p class="text-xs text-paper-muted">${flower.quote_zh}</p>
               </blockquote>
 
-              <!-- 四道肯亞共煮菜餚名單 -->
+              <!-- 四道菜餚名單 (Repas partagé / Shared Meal) -->
               <div class="mt-5">
                 <h3 class="font-serif text-base font-bold text-paper-ink mb-2.5 flex items-center gap-2">
                   <span class="w-1.5 h-4 rounded-full bg-paper-terracotta"></span>
-                  <span>Menu du repas partagé · 四道共煮料理</span>
+                  <span class="lang-fr">Repas partagé</span>
+                  <span class="lang-en hidden">Shared Meal</span>
                 </h3>
                 <div class="space-y-2">
                   ${dishesListHTML}
                 </div>
               </div>
 
-              <!-- 關鍵香料標籤 -->
+              <!-- 核心香料 (Ingrédients Clés / Key Ingredients) -->
               <div class="mt-5">
                 <h3 class="font-serif text-sm font-bold text-paper-ink mb-2 flex items-center gap-2">
                   <span class="w-1.5 h-3.5 rounded-full bg-paper-sage"></span>
-                  <span>Épices clés · 靈魂香料</span>
+                  <span class="lang-fr">Ingrédients Clés</span>
+                  <span class="lang-en hidden">Key Ingredients</span>
                 </h3>
                 <div class="flex flex-wrap gap-1.5">
                   ${spicesHTML}
-                </div>
-              </div>
-
-              <!-- 雙手揉麵、慢火煨飯的溫暖信任故事短文 -->
-              <div class="mt-5">
-                <h3 class="font-serif text-base font-bold text-paper-ink mb-2 flex items-center gap-2">
-                  <span class="w-1.5 h-4 rounded-full bg-paper-ink"></span>
-                  <span>Histoire de la table · 餐桌故事</span>
-                </h3>
-                <div class="p-4 rounded-2xl bg-paper-bg border border-paper-border text-xs sm:text-sm text-paper-dark leading-relaxed space-y-2.5">
-                  <p class="whitespace-pre-line font-serif text-sm text-paper-ink">
-                    <span class="lang-fr">${flower.story_fr}</span>
-                    <span class="lang-en hidden">${flower.story_en}</span>
-                  </p>
-                  <hr class="border-paper-border/70" />
-                  <p class="whitespace-pre-line text-xs text-paper-muted leading-relaxed">${flower.story_zh}</p>
                 </div>
               </div>
             </div>
           `;
 
           footerEl.innerHTML = `
-            <div class="flex items-center justify-between gap-2">
-              <label for="upload-dish-photo" class="cursor-pointer flex-1 py-2.5 px-3 rounded-xl bg-paper-card hover:bg-paper-bg text-paper-dark border border-paper-border text-xs font-medium text-center transition-colors">
-                📷 換上實拍料理照片
-              </label>
-              <a href="about.html" class="flex-1 py-2.5 px-3 rounded-xl bg-paper-ink hover:bg-paper-terracotta text-paper-bg text-xs font-medium text-center transition-colors">
-                <span class="lang-fr">Cuisiner le prochain plat →</span>
-                <span class="lang-en hidden">Cook the next meal →</span>
-              </a>
-            </div>
+            <a href="story-01.html" class="w-full py-3 px-4 rounded-xl bg-paper-ink hover:bg-paper-terracotta text-paper-bg text-sm font-medium shadow-md transition-all flex items-center justify-center gap-2">
+              <span class="lang-fr">Découvrir toute l’histoire →</span>
+              <span class="lang-en hidden">Read the whole story →</span>
+            </a>
           `;
         } else {
-          // 待開花苞 (No. 02, No. 03, No. 04) 抽屜內容：手繪花苞草圖 + 誠摯共煮邀約 + about.html 按鈕
+          // 7. 右側故事抽屜：No.02 ~ 04 待開花苞
           bodyEl.innerHTML = `
             <div class="flex items-center justify-between gap-2 pb-3.5 border-b border-paper-border">
               <div class="flex items-center gap-2">
                 <span class="font-serif italic text-lg font-bold text-paper-sage">${flower.num}</span>
                 <span class="px-2.5 py-0.5 rounded-full text-[11px] bg-paper-sage/15 text-paper-sage font-medium">
-                  Bourgeon en attente · 待開花苞
+                  <span class="lang-fr">Bourgeon en attente</span>
+                  <span class="lang-en hidden">Unopened Bud</span>
                 </span>
               </div>
-              <button id="btn-close-drawer" class="p-1.5 rounded-full hover:bg-paper-panel text-paper-muted hover:text-paper-ink transition-colors" aria-label="Fermer">
+              <button id="btn-close-drawer" class="p-1.5 rounded-full hover:bg-paper-panel text-paper-muted hover:text-paper-ink transition-colors" aria-label="Close">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
 
-            <!-- 手繪自然植物花苞草圖圓框 -->
+            <!-- 手繪自然植物花苞草圖圓框 (已移除下方文字標籤) -->
             <div class="mt-6 flex flex-col items-center">
               <div class="w-52 h-52 rounded-full bg-paper-bg border border-paper-border flex items-center justify-center p-2 shadow-inner">
                 <div class="w-44 h-44">
                   ${createNaturalBotanicalBudSVG(flower)}
                 </div>
               </div>
-              <span class="mt-2.5 text-[11px] text-paper-sage font-medium">
-                🌱 花萼緊裹的含苞狀態 · 等待一場共煮喚醒色彩
-              </span>
             </div>
 
-            <!-- 誠摯的共煮邀約文案 -->
+            <!-- 主標題、副標題、心願引言與說明文字 -->
             <div class="mt-6 text-center sm:text-left">
               <h2 class="font-serif text-2xl font-bold text-paper-ink">
                 <span class="lang-fr">${flower.title_fr}</span>
                 <span class="lang-en hidden">${flower.title_en}</span>
               </h2>
               <p class="font-serif text-base text-paper-terracotta font-medium mt-0.5">
-                這朵花正在等待下一場圍繞餐桌的相遇……
+                ${flower.subtitle_zh}
               </p>
 
+              <!-- 心願引言 (Quote) -->
               <blockquote class="mt-4 p-4 rounded-xl bg-paper-bg border-l-4 border-paper-sage text-left">
                 <p class="font-serif italic text-base text-paper-ink">
                   <span class="lang-fr">${flower.quote_fr}</span>
@@ -1271,30 +1137,36 @@
                 </p>
               </blockquote>
 
-              <div class="mt-4 p-4 rounded-2xl bg-paper-bg border border-paper-border text-left space-y-2.5">
+              <!-- 花苞說明文字 -->
+              <div class="mt-4 p-4 rounded-2xl bg-paper-bg border border-paper-border text-left">
                 <p class="text-sm text-paper-dark leading-relaxed">
                   <span class="lang-fr">${flower.story_fr}</span>
                   <span class="lang-en hidden">${flower.story_en}</span>
                 </p>
-                <hr class="border-paper-border/70" />
-                <p class="text-xs text-paper-muted leading-relaxed">
-                  ${flower.story_zh}
-                </p>
               </div>
 
-              <!-- 共煮三步驟小提示 -->
+              <!-- 三步驟小卡片 -->
               <div class="mt-5 grid grid-cols-3 gap-2 text-center">
-                <div class="p-2.5 rounded-xl bg-paper-bg border border-paper-border">
-                  <div class="font-serif font-bold text-xs text-paper-terracotta">1. Marché</div>
-                  <div class="text-[11px] text-paper-muted mt-0.5">一起逛市場挑食材</div>
+                <div class="p-3 rounded-xl bg-paper-bg border border-paper-border flex flex-col items-center justify-center">
+                  <span class="font-serif italic font-bold text-xs text-paper-terracotta mb-1">1.</span>
+                  <div class="font-serif font-semibold text-xs text-paper-ink leading-snug">
+                    <span class="lang-fr">On fait les courses.</span>
+                    <span class="lang-en hidden">Shop together.</span>
+                  </div>
                 </div>
-                <div class="p-2.5 rounded-xl bg-paper-bg border border-paper-border">
-                  <div class="font-serif font-bold text-xs text-paper-terracotta">2. Cuisine</div>
-                  <div class="text-[11px] text-paper-muted mt-0.5">交換一道家鄉菜</div>
+                <div class="p-3 rounded-xl bg-paper-bg border border-paper-border flex flex-col items-center justify-center">
+                  <span class="font-serif italic font-bold text-xs text-paper-terracotta mb-1">2.</span>
+                  <div class="font-serif font-semibold text-xs text-paper-ink leading-snug">
+                    <span class="lang-fr">On cuisine.</span>
+                    <span class="lang-en hidden">Cook together.</span>
+                  </div>
                 </div>
-                <div class="p-2.5 rounded-xl bg-paper-bg border border-paper-border">
-                  <div class="font-serif font-bold text-xs text-paper-terracotta">3. Éclosion</div>
-                  <div class="text-[11px] text-paper-muted mt-0.5">花苞綻放紀錄故事</div>
+                <div class="p-3 rounded-xl bg-paper-bg border border-paper-border flex flex-col items-center justify-center">
+                  <span class="font-serif italic font-bold text-xs text-paper-terracotta mb-1">3.</span>
+                  <div class="font-serif font-semibold text-xs text-paper-ink leading-snug">
+                    <span class="lang-fr">Une fleur fleurit.</span>
+                    <span class="lang-en hidden">A flower blooms.</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1308,7 +1180,6 @@
           `;
         }
 
-        // 重新綁定關閉按鈕與語言顯示狀態
         const closeBtn = document.getElementById('btn-close-drawer');
         if (closeBtn) closeBtn.onclick = closeStoryDrawer;
         applyLanguageDisplay(state.lang);
@@ -1337,7 +1208,6 @@
       function centerCameraOnFlower(flowerId, withDrawerOffset = false) {
         const f = FLOWERS[flowerId];
         if (!f) return;
-        // 抽屜展開時，攝影機自動向左平移 120px (即畫面中心點往左移 120px)，確保選中花朵不被右側抽屜擋住
         const offsetX = withDrawerOffset && window.innerWidth > 640 ? -120 : 0;
         centerCameraOnWorldPoint(f.worldX, f.worldY, offsetX);
       }
@@ -1352,21 +1222,18 @@
         lastTime = now;
         state.idleClock += dt;
 
-        // 1. 攝影機平滑插值
         state.camX += (state.targetCamX - state.camX) * 0.11;
         state.camY += (state.targetCamY - state.camY) * 0.11;
 
         const artWorld = document.getElementById('art-world');
         artWorld.style.transform = `translate3d(${state.camX.toFixed(1)}px, ${state.camY.toFixed(1)}px, 0)`;
 
-        // 2. 計算螢幕中央聚光燈在畫布世界中的座標
         const { vw, vh } = getCameraBounds();
         const spotlightOffsetX = state.drawerOpen && window.innerWidth > 640 ? -120 : 0;
         const focusWorldX = vw / 2 + spotlightOffsetX - state.camX;
         const focusWorldY = vh / 2 - state.camY;
         const focusRadius = Math.min(vw, vh) * 0.42;
 
-        // 3. 更新盛開花朵的綻放度
         FLOWERS.forEach((flower, idx) => {
           if (flower.status !== 'bloom') return;
           const fState = state.flowers[idx];
@@ -1386,7 +1253,6 @@
           applyFrangipaniBloom(flower, fState.currentBloom);
         });
 
-        // 4. 動態蒲公英絨毛種子：正弦漂浮與微幅擺動
         document.querySelectorAll('.world-dandelion-seed').forEach((seedEl) => {
           const bx = parseFloat(seedEl.getAttribute('data-bx'));
           const by = parseFloat(seedEl.getAttribute('data-by'));
@@ -1404,7 +1270,7 @@
       }
 
       // =======================================================================
-      // 12. 雙語切換與所有互動事件綁定
+      // 12. 雙語切換、首次進站手勢引導銷毀與互動事件綁定
       // =======================================================================
       function applyLanguageDisplay(lang) {
         state.lang = lang;
@@ -1432,9 +1298,21 @@
       function bindEvents() {
         const viewport = document.getElementById('garden-viewport');
 
+        // 首次進站手勢滑動引導自動銷毀邏輯
+        const hintEl = document.getElementById('swipe-hint');
+        const dismissHint = () => {
+          if (hintEl && !hintEl.classList.contains('opacity-0')) {
+            hintEl.classList.add('opacity-0');
+            setTimeout(() => hintEl.remove(), 700);
+          }
+        };
+        setTimeout(dismissHint, 3800);
+        viewport.addEventListener('mousedown', dismissHint, { once: true });
+        viewport.addEventListener('touchstart', dismissHint, { once: true });
+
         // 滑鼠拖曳平移畫布
         viewport.addEventListener('mousedown', (e) => {
-          if (e.target.closest('button, a, label, input')) return;
+          if (e.target.closest('button, a')) return;
           state.isDragging = true;
           state.hasMovedDuringDrag = false;
           state.dragStartX = e.clientX;
@@ -1460,7 +1338,7 @@
         // 點擊畫布空白處時收合右側抽屜
         viewport.addEventListener('click', (e) => {
           if (state.hasMovedDuringDrag) return;
-          if (!e.target.closest('.flower-node, button, a, label, input') && state.drawerOpen) {
+          if (!e.target.closest('.flower-node, button, a') && state.drawerOpen) {
             closeStoryDrawer();
           }
         });
@@ -1498,26 +1376,10 @@
           state.targetCamY = clamp(state.targetCamY - e.deltaY * 0.85, minY, maxY);
         }, { passive: false });
 
-        // 聚光燈顯示切換
-        document.getElementById('toggle-spotlight-ring').addEventListener('change', (e) => {
-          document.getElementById('spotlight-indicator').style.display = e.target.checked ? 'flex' : 'none';
-        });
-
-        // 回到聚落中心按鈕
-        const recenterFn = () => {
+        // 左下角極簡聚落膠囊導覽 (Table I)
+        document.getElementById('btn-cluster-nav').addEventListener('click', () => {
           closeStoryDrawer();
           centerCameraOnWorldPoint(CLUSTER_I_CENTER.x, CLUSTER_I_CENTER.y, 0);
-        };
-        document.getElementById('btn-recenter-table1').addEventListener('click', recenterFn);
-        document.getElementById('btn-reset-camera').addEventListener('click', recenterFn);
-        document.getElementById('btn-focus-cluster').addEventListener('click', recenterFn);
-
-        // 底部快速點選 4 朵花
-        document.querySelectorAll('.flower-quick-btn').forEach((btn) => {
-          btn.addEventListener('click', () => {
-            const fid = parseInt(btn.getAttribute('data-goto-flower'), 10);
-            openFlowerDrawerAndFocus(fid);
-          });
         });
 
         // 語言切換按鈕
@@ -1525,22 +1387,6 @@
           btn.addEventListener('click', () => {
             applyLanguageDisplay(btn.getAttribute('data-set-lang'));
           });
-        });
-
-        // 上傳實拍料理照片替換第 1 朵肯亞料理花
-        document.getElementById('upload-dish-photo').addEventListener('change', (e) => {
-          const file = e.target.files && e.target.files[0];
-          if (!file) return;
-          const reader = new FileReader();
-          reader.onload = function (ev) {
-            const dataUrl = ev.target.result;
-            state.flowers[0].photoDataUrl = dataUrl;
-            document.querySelectorAll('.dish-svg-image-0').forEach((imgEl) => {
-              imgEl.setAttribute('href', dataUrl);
-            });
-            openFlowerDrawerAndFocus(0);
-          };
-          reader.readAsDataURL(file);
         });
 
         window.addEventListener('resize', () => {
@@ -1556,22 +1402,18 @@
       // 啟動餐桌記憶花園
       // =======================================================================
       window.addEventListener('DOMContentLoaded', () => {
-        // 1. 生成第 1 朵花 (肯亞家常饗宴) 的預設料理紋理
         state.flowers[0].photoDataUrl = generateKenyanFeastPhotoTexture();
 
-        // 2. 初始化雞蛋花遮罩、植物背景與 4 朵花節點
         initGlobalFrangipaniClips();
         buildWorldBotanicalBackground();
         mountGardenFlowers();
         bindEvents();
 
-        // 3. 讀取語言設定 (預設法文 FR)
         const savedLang = (() => {
           try { return localStorage.getItem('table_blooms_lang'); } catch (e) { return null; }
         })();
         applyLanguageDisplay(savedLang === 'en' ? 'en' : 'fr');
 
-        // 4. 預設將鏡頭置中對準 Table I 聚落並立即定位
         centerCameraOnWorldPoint(CLUSTER_I_CENTER.x, CLUSTER_I_CENTER.y, 0);
         state.camX = state.targetCamX;
         state.camY = state.targetCamY;
