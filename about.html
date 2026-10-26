@@ -104,9 +104,14 @@ p{margin:0 0 12px}.lead{font-size:18px;color:var(--mu)}.note{color:var(--mu);fon
 
 </main>
 <script>
-function setLang(l){document.documentElement.setAttribute('data-lang',l);document.documentElement.lang=l;
-document.querySelectorAll('.lang button').forEach(function(b){b.classList.toggle('on',b.dataset.l===l)})}
+function setLang(l){
+  document.documentElement.setAttribute('data-lang',l);
+  document.documentElement.lang=l;
+  try{localStorage.setItem('table_blooms_lang',l)}catch(e){}
+  document.querySelectorAll('.lang button').forEach(function(b){b.classList.toggle('on',b.dataset.l===l)});
+}
 document.querySelectorAll('.lang button').forEach(function(b){b.onclick=function(){setLang(b.dataset.l)}});
-setLang((navigator.language||'en').slice(0,2)==='fr'?'fr':'en');
+var saved=(function(){try{return localStorage.getItem('table_blooms_lang')}catch(e){return null}})();
+setLang(saved||((navigator.language||'en').slice(0,2)==='fr'?'fr':'en'));
 </script>
 </body></html>
