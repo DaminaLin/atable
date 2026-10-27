@@ -140,10 +140,10 @@
 
     /* 首次進站手勢滑動引導動畫 */
     @keyframes swipeCue {
-      0% { transform: translateX(20px); opacity: 0; }
-      25% { opacity: 0.9; }
-      75% { transform: translateX(-20px); opacity: 0.9; }
-      100% { transform: translateX(-20px); opacity: 0; }
+      0% { transform: translateX(55px); opacity: 0; }
+      25% { opacity: 0.95; }
+      75% { transform: translateX(-55px); opacity: 0.95; }
+      100% { transform: translateX(-55px); opacity: 0; }
     }
     .swipe-hand-anim {
       animation: swipeCue 2.2s ease-in-out infinite;
@@ -298,14 +298,14 @@
 
     <section id="garden-viewport" class="relative w-full h-full overflow-hidden canvas-grab select-none">
 
-      <!-- 首次進站手勢滑動引導動畫 -->
-      <div id="swipe-hint" class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 flex flex-col items-center gap-2 transition-opacity duration-700">
-        <div class="swipe-hand-anim flex items-center justify-center w-12 h-12 rounded-full bg-paper-card/90 backdrop-blur border border-paper-border shadow-md">
-          <svg class="w-6 h-6 text-paper-dark" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+      <!-- 首次進站手勢滑動引導動畫（放大版） -->
+      <div id="swipe-hint" class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 flex flex-col items-center gap-3 transition-opacity duration-700">
+        <div class="swipe-hand-anim flex items-center justify-center w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-paper-card/95 backdrop-blur-md border-2 border-paper-border shadow-xl">
+          <svg class="w-12 h-12 sm:w-14 sm:h-14 text-paper-dark" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" />
           </svg>
         </div>
-        <span class="px-3 py-1 rounded-full bg-paper-card/90 backdrop-blur border border-paper-border text-[11px] text-paper-muted font-medium">
+        <span class="px-4 py-1.5 rounded-full bg-paper-card/95 backdrop-blur-md border border-paper-border text-xs sm:text-sm text-paper-dark font-medium shadow-sm">
           <span class="lang-fr">Glissez pour explorer</span>
           <span class="lang-en hidden">Drag to explore</span>
         </span>
@@ -1041,15 +1041,16 @@
               </div>
             </div>
 
-            <!-- 料理主標題、副標題與引言 (已移除花型象徵徽章與長篇故事本文) -->
+            <!-- 料理主標題、副標題與引言-->
             <div class="mt-5">
+              <!-- 法文/英文大標題 -->
               <h2 class="font-serif text-2xl sm:text-[26px] font-bold text-paper-ink leading-tight">
-                <span class="lang-fr">${flower.title_fr} ${flower.title_zh}</span>
-                <span class="lang-en hidden">${flower.title_en} ${flower.title_zh}</span>
+                <span class="lang-fr">${flower.title_fr}</span>
+                <span class="lang-en hidden">${flower.title_en}</span>
               </h2>
-              <p class="font-serif italic text-sm text-paper-muted mt-1">
-                <span class="lang-fr">${flower.subtitle_fr}</span>
-                <span class="lang-en hidden">${flower.subtitle_en}</span>
+              <!-- 中文標題：獨立在下一行，套用與花苞副標完全相同的陶土磚紅色 -->
+              <p class="font-serif text-base text-paper-terracotta font-medium mt-0.5">
+               ${flower.title_zh}
               </p>
 
               <!-- 餐桌引言 (Quote) -->
