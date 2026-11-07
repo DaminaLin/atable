@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="fr" data-lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>No. 01 · Repas traditionnel kényan — Là où fleurit la table</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Noto+Sans+TC:wght@300;400;500&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            paper: {
+              bg: '#F7F3EB',
+              panel: '#EFE9DE',
+              card: '#FAF7F2',
+              border: '#DDD3C4',
+              dark: '#2C2825',
+              muted: '#786F66',
+              ink: '#221F1D',
+              sage: '#4A5D4E',
+              terracotta: '#B56345'
+            }
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', '"Noto Serif TC"', 'Georgia', 'serif'],
+            sans: ['system-ui', '-apple-system', '"Noto Sans TC"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #F7F3EB;
+      color: #221F1D;
+      font-family: '"Cormorant Garamond"', '"Noto Serif TC"', Georgia, serif;
+      line-height: 1.85;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 溫潤法式手揉宣紙微粒紋理 (#F7F3EB) */
+    .paper-texture {
+      background-color: #F7F3EB;
+      background-image:
+        radial-gradient(rgba(34, 31, 29, 0.032) 1px, transparent 0),
+        radial-gradient(rgba(181, 99, 69, 0.018) 1px, #F7F3EB 0);
+      background-size: 28px 28px;
+      background-position: 0 0, 14px 14px;
+    }
+
+    /* 統一媒體容器 (支援 16:10 單欄與 5:7 雙欄圖片/微循環短片) */
+    .editorial-media img,
+    .editorial-media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .editorial-media:hover img,
+    .editorial-media:hover video {
+      transform: scale(1.015);
+    }
+
+    /* 摺疊抽屜箭頭 */
+    details > summary {
+      list-style: none;
+    }
+    details > summary::-webkit-details-marker {
+      display: none;
+    }
+    details[open] .accordion-arrow {
+      transform: rotate(180deg);
+    }
+
+    /* 頁尾手繪花苞呼吸浮動動畫 */
+    @keyframes budPulse {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-5px) scale(1.035); }
+    }
+    .footer-bud-anim {
+      animation: budPulse 3.2s ease-in-out infinite;
+    }
+
+    /* 自訂捲軸 */
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F7F3EB;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #D5C9B8;
+      border-radius: 999px;
+    }
+  </style>
+</head>
+<body class="paper-texture min-h-screen flex flex-col">
+
+  <!-- =========================================================================
+       全域共用 SVG 資產：無彩色水墨葉枝 (#botanical-leaf-branch) 與花苞暖光漸層
+       ========================================================================= -->
+  <svg width="0" height="0" class="absolute pointer-events-none">
+    <defs>
+      <radialGradient id="bud-warm-glow" cx="50%" cy="45%" r="50%">
+        <stop offset="0%" stop-color="#E69F65" stop-opacity="0.55" />
+        <stop offset="60%" stop-color="#D98254" stop-opacity="0.18" />
+        <stop offset="100%" stop-color="#F7F3EB" stop-opacity="0" />
+      </radialGradient>
+
+      <g id="botanical-leaf-branch">
+        <path fill="#221F1D" fill-opacity="0.10" d="M250.8,0c-12,30.4-35.2,62.4-43.2,101.6c-10.4,51.2,23.2,70.4,43.2,87.2V0z"/>
+        <path fill="#221F1D" fill-opacity="0.22" d="M250.8,188.8V0c-12,30.4-35.2,62.4-43.2,101.6"/>
+        <path fill="#221F1D" fill-opacity="0.38" d="M250.8,188.8V0c-12,30.4-17.6,85.6-25.6,124"/>
+        <path fill="#221F1D" fill-opacity="0.10" d="M250.8,0c12,30.4,35.2,62.4,43.2,101.6c10.4,51.2-23.2,70.4-43.2,87.2V0z"/>
+        <path fill="#221F1D" fill-opacity="0.22" d="M250.8,188.8V0c12,30.4,35.2,62.4,43.2,101.6"/>
+        <path fill="#221F1D" fill-opacity="0.38" d="M250.8,188.8V0c12,30.4,17.6,85.6,25.6,124"/>
+        <path fill="#221F1D" fill-opacity="0.80" d="M250.8,501.6c-2.4,0-4-1.6-4-4v-484c0-2.4,1.6-4,4-4s4,1.6,4,4v484 C254.8,499.2,253.2,501.6,250.8,501.6z"/>
+        <path fill="#221F1D" fill-opacity="0.10" d="M90.8,158.4c12,28.8,18.4,66.4,40,98.4c28,41.6,64,32,88.8,29.6L90.8,158.4z"/>
+        <path fill="#221F1D" fill-opacity="0.22" d="M218.8,286.4l-128-128c12,28.8,18.4,66.4,40,98.4"/>
+        <path fill="#221F1D" fill-opacity="0.38" d="M218.8,286.4l-128-128c12,28.8,45.6,69.6,67.2,101.6"/>
+        <path fill="#221F1D" fill-opacity="0.10" d="M90.8,158.4c28.8,12,66.4,18.4,98.4,40c41.6,28,32,64,29.6,88.8L90.8,158.4z"/>
+        <path fill="#221F1D" fill-opacity="0.22" d="M218.8,286.4l-128-128c28.8,12,66.4,18.4,98.4,40"/>
+        <path fill="#221F1D" fill-opacity="0.38" d="M218.8,286.4l-128-128c28.8,12,69.6,45.6,101.6,67.2"/>
+        <path fill="#221F1D" fill-opacity="0.10" d="M126.8,321.6c9.6,22.4,14.4,52,31.2,77.6c21.6,32.8,50.4,25.6,69.6,23.2L126.8,321.6z"/>
+        <path fill="#221F1D" fill-opacity="0.22" d="M227.6,422.4L126.8,321.6c9.6,22.4,14.4,52,31.2,77.6"/>
+        <path fill="#221F1D" fill-opacity="0.38" d="M227.6,422.4L126.8,321.6c9.6,22.4,36,55.2,52.8,80"/>
+        <path fill="#221F1D" fill-opacity="0.10" d="M126.8,321.6c22.4,9.6,52,14.4,77.6,31.2c32.8,21.6,25.6,50.4,23.2,69.6L126.8,321.6z"/>
+        <path fill="#221F1D" fill-opacity="0.22" d="M226.8,422.4l-100-100.8c22.4,9.6,52,14.4,77.6,31.2"/>
+        <path fill="#221F1D" fill-opacity="0.38" d="M226.8,422.4l-100-100.8c22.4,9.6,55.2,36,80,52.8"/>
+        <path fill="#221F1D" fill-opacity="0.80" d="M250,448.8c-0.8,0-2.4,0-3.2-0.8l-100-100.8c-1.6-1.6-1.6-4,0-5.6s4-1.6,5.6,0l100,100 c1.6,1.6,1.6,4,0,5.6C252.4,448.8,250.8,448.8,250,448.8z"/>
+        <path fill="#221F1D" fill-opacity="0.80" d="M250.8,321.6c-0.8,0-2.4,0-3.2-0.8L146.8,219.2c-1.6-1.6-1.6-4,0-5.6s4-1.6,5.6,0l100.8,100.8 c1.6,1.6,1.6,4,0,5.6C252.4,320.8,251.6,321.6,250.8,321.6z"/>
+        <path fill="#221F1D" fill-opacity="0.10" d="M410.8,120c-12,28.8-18.4,66.4-40,98.4c-28,41.6-64,32-88.8,29.6L410.8,120z"/>
+        <path fill="#221F1D" fill-opacity="0.22" d="M282.8,248l128-128c-12,28.8-18.4,66.4-40,98.4"/>
+        <path fill="#221F1D" fill-opacity="0.38" d="M282.8,248l128-128c-12,28.8-45.6,69.6-67.2,101.6"/>
+        <path fill="#221F1D" fill-opacity="0.10" d="M410.8,120c-28.8,12-66.4,18.4-98.4,40c-41.6,28-32,64-29.6,88.8L410.8,120z"/>
+        <path fill="#221F1D" fill-opacity="0.22" d="M282.8,248l128-128c-28.8,12-66.4,18.4-98.4,40"/>
+        <path fill="#221F1D" fill-opacity="0.38" d="M282.8,248l128-128c-28.8,12-69.6,45.6-101.6,67.2"/>
+        <path fill="#221F1D" fill-opacity="0.10" d="M374.8,283.2c-9.6,22.4-14.4,52-31.2,77.6C322,393.6,293.2,386.4,274,384L374.8,283.2z"/>
+        <path fill="#221F1D" fill-opacity="0.22" d="M274,384l100.8-100.8c-9.6,22.4-14.4,52-31.2,77.6"/>
+        <path fill="#221F1D" fill-opacity="0.38" d="M274,384l100.8-100.8c-9.6,22.4-36,55.2-52.8,80"/>
+        <path fill="#221F1D" fill-opacity="0.10" d="M374.8,283.2c-22.4,9.6-52,14.4-77.6,31.2C264.4,336,271.6,364.8,274,384L374.8,283.2z"/>
+        <path fill="#221F1D" fill-opacity="0.22" d="M274.8,384l100.8-100.8c-22.4,9.6-52,14.4-77.6,31.2"/>
+        <path fill="#221F1D" fill-opacity="0.38" d="M274.8,384l100.8-100.8c-22.4,9.6-55.2,36-80,52.8"/>
+        <path fill="#221F1D" fill-opacity="0.80" d="M252.4,410.4c-0.8,0-2.4,0-3.2-0.8c-1.6-1.6-1.6-4,0-5.6l100-100c1.6-1.6,4-1.6,5.6,0s1.6,4,0,5.6 l-100,100C254,410.4,253.2,410.4,252.4,410.4z"/>
+        <path fill="#221F1D" fill-opacity="0.80" d="M252.4,281.6c-0.8,0-2.4,0-3.2-0.8c-1.6-1.6-1.6-4,0-5.6l100-100c1.6-1.6,4-1.6,5.6,0s1.6,4,0,5.6 l-100,100C254,281.6,253.2,281.6,252.4,281.6z"/>
+      </g>
+    </defs>
+  </svg>
+
+  <!-- =========================================================================
+       頂部導覽列 (Header - 左側返回花園、中央時空資訊、右側 FR/EN 切換膠囊)
+       ========================================================================= -->
+  <header class="sticky top-0 z-40 bg-paper-bg/90 backdrop-blur-md border-b border-paper-border/70 px-5 sm:px-10 py-3.5 font-sans">
+    <div class="max-w-5xl mx-auto flex items-center justify-between gap-4">
+      
+      <a href="index.html" class="inline-flex items-center gap-2 text-xs sm:text-sm font-medium text-paper-dark hover:text-paper-terracotta transition-colors">
+        <span aria-hidden="true">←</span>
+        <span class="lang-fr">Le jardin</span>
+        <span class="lang-en hidden">The garden</span>
+      </a>
+
+      <div class="font-serif italic text-xs sm:text-sm text-paper-muted tracking-wide">
+        No. 01 · Oct 2026 · Bordeaux
+      </div>
+
+      <div class="inline-flex rounded-full border border-paper-border bg-paper-card p-0.5 text-xs">
+        <button type="button" data-set-lang="fr" class="lang-btn px-2.5 py-0.5 rounded-full font-medium transition-colors bg-paper-ink text-paper-bg">
+          FR
+        </button>
+        <button type="button" data-set-lang="en" class="lang-btn px-2.5 py-0.5 rounded-full font-medium transition-colors text-paper-muted hover:text-paper-ink">
+          EN
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       主內容區：統一 max-w-4xl 容器，確保 16:10 單欄與 5:7 雙欄左右邊緣完全垂直對齊
+       ========================================================================= -->
+  <main class="max-w-4xl mx-auto w-full px-5 sm:px-10 pt-14 sm:pt-20 pb-28 relative">
+
+    <!-- 背景水墨葉枝淡雅浮水印 -->
+    <svg viewBox="0 0 502 502" class="w-72 h-72 absolute top-8 right-4 opacity-[0.12] pointer-events-none -z-10">
+      <use href="#botanical-leaf-branch" transform="rotate(22 250 250)" />
+    </svg>
+
+    <!-- =======================================================================
+         3. 頂部標題區 (Hero Title)
+         ======================================================================= -->
+    <header class="max-w-2xl mx-auto text-center mb-16">
+      <p class="font-serif italic text-sm sm:text-base text-paper-terracotta tracking-wider mb-2">
+        Table I · Fleur No. 01
+      </p>
+
+      <h1 class="font-serif text-4xl sm:text-6xl font-normal text-paper-ink tracking-tight leading-[1.15]">
+        <span class="lang-fr">Repas traditionnel kényan</span>
+        <span class="lang-en hidden">Traditional Kenyan Feast</span>
+      </h1>
+
+      <p class="font-serif text-xl sm:text-2xl text-paper-terracotta font-medium mt-3">
+        肯亞家常饗宴
+      </p>
+
+      <p class="font-serif italic text-sm sm:text-base text-paper-muted mt-2.5">
+        Pilau ya Mbuzi · Kenya Chapati · Kamande · Kabeji
+      </p>
+    </header>
+
+    <!-- =======================================================================
+         4. 單元 01 至 06 依序排列
+         ======================================================================= -->
+
+    <!-- 【單元 01】單欄容器 (16:10) -->
+    <div class="editorial-media aspect-[16/10] w-full rounded-2xl overflow-hidden bg-paper-panel my-12 sm:my-16">
+      <img id="media-unit-01" src="" alt="01 · Karibu mezani" />
+    </div>
+
+    <div class="max-w-2xl mx-auto text-center my-12 sm:my-16">
+      <span class="block font-serif italic text-xs sm:text-sm text-paper-terracotta tracking-widest uppercase mb-2.5">
+        01 · Karibu mezani
+      </span>
+      <h2 class="font-serif text-xl sm:text-2xl font-normal text-paper-ink leading-snug mb-4">
+        <span class="lang-fr">« C'est quand on cuisine pour les autres que c'est le meilleur ! »</span>
+        <span class="lang-en hidden">“Food truly tastes best when cooked for others!”</span>
+      </h2>
+      <p class="font-serif text-base sm:text-[17px] leading-[1.85] tracking-[0.015em] text-paper-dark">
+        <span class="lang-fr">Tout a commencé par une simple assiette de lentilles partagée dans un Airbnb. Quelques jours plus tard, c’était à mon tour de préparer un réconfortant repas taïwanais de tous les jours. Même si je n’y suis pas restée, j'y suis retournée spécialement pour cette cuisine d'Afrique de l'Est. Mes colocataires Joy et Susan ont préparé ce festin de quatre plats kényans.</span>
+        <span class="lang-en hidden">It all began with a simple plate of stewed lentils shared at an Airbnb. A few days later, it was my turn to cook everyday, comforting Taiwanese food. Though I moved out, I returned especially for this East African feast. My flatmates Joy and Susan prepared these four traditional Kenyan dishes.</span>
+      </p>
+      <p class="font-serif text-base sm:text-[17px] leading-[1.85] tracking-[0.015em] text-paper-dark mt-3">
+        一切始於在 Airbnb 的一盤燉扁豆飯，幾天後，換我端出非常日常的台灣家常菜。雖然後來沒繼續住那裡，但我特別為了東非的料理回去拜訪。室友Joy和Susan張羅了這桌四道菜的肯亞盛宴。
+      </p>
+    </div>
+
+    <!-- 【單元 02】單欄容器 (16:10 影片) -->
+    <div class="editorial-media aspect-[16/10] w-full rounded-2xl overflow-hidden bg-paper-panel my-12 sm:my-16">
+      <video id="media-unit-02" src="" autoplay loop muted playsinline disablePictureInPicture class="aspect-[16/10]"></video>
+    </div>
+
+    <div class="max-w-2xl mx-auto text-center my-12 sm:my-16">
+      <span class="block font-serif italic text-xs sm:text-sm text-paper-terracotta tracking-widest uppercase mb-2.5">
+        02 · Les épices &amp; la paume
+      </span>
+      <h2 class="font-serif text-xl sm:text-2xl font-normal text-paper-ink leading-snug mb-4">
+        <span class="lang-fr">Goûter au creux de la main, ajuster à l’instinct.</span>
+        <span class="lang-en hidden">Tasting in the hollow of the palm, adjusting by instinct.</span>
+      </h2>
+      <p class="font-serif text-base sm:text-[17px] leading-[1.85] tracking-[0.015em] text-paper-dark">
+        <span class="lang-fr">Le Pilau Masala rapporté du Kenya et le bouillon tout-usage que l'on trouve dans toutes les maisons : une cuisine tellement familiale. J’ai aussi remarqué qu’elles avaient l’habitude de déposer une goutte de sauce au creux de la paume pour en vérifier l’assaisonnement.</span>
+        <span class="lang-en hidden">Pilau Masala brought from Kenya, alongside the everyday all-purpose seasoning found in every home—truly home-style cooking. I also noticed how they would drop a bit of sauce into the hollow of their palms to check the seasoning.</span>
+      </p>
+      <p class="font-serif text-base sm:text-[17px] leading-[1.85] tracking-[0.015em] text-paper-dark mt-3">
+        來自肯亞的Pilau masala，還有家裡都有的萬用調味粉，果然很家常。另外我觀察到她們習慣將醬汁滴在手掌上確認鹹淡。
+      </p>
+    </div>
+
+    <!-- 【單元 03】單欄容器 (16:10 影片) -->
+    <div class="editorial-media aspect-[16/10] w-full rounded-2xl overflow-hidden bg-paper-panel my-12 sm:my-16">
+      <video id="media-unit-03" src="" autoplay loop muted playsinline disablePictureInPicture class="aspect-[16/10]"></video>
+    </div>
+
+    <div class="max-w-2xl mx-auto text-center my-12 sm:my-16">
+      <span class="block font-serif italic text-xs sm:text-sm text-paper-terracotta tracking-widest uppercase mb-2.5">
+        03 · Kenya Chapati · 手撕烤薄餅
+      </span>
+      <h2 class="font-serif text-xl sm:text-2xl font-normal text-paper-ink leading-snug mb-4">
+        <span class="lang-fr">« C’est exactement comme nos crêpes à la ciboule à Taïwan ! »</span>
+        <span class="lang-en hidden">“That’s the exact same way we fold scallion pancakes in Taiwan!”</span>
+      </h2>
+      <p class="font-serif text-base sm:text-[17px] leading-[1.85] tracking-[0.015em] text-paper-dark">
+        <span class="lang-fr">Le Chapati existe aussi dans la cuisine indienne, mais la version kényane y intègre un véritable travail de feuilletage : la pâte étalée est badigeonnée d'huile, découpée en lanières, puis enroulée comme un escargot avant d'être reposée et aplatie à nouveau.</span>
+        <span class="lang-en hidden">Chapati also appears in Indian cuisine, but the Kenyan version introduces a laminating technique: the dough is rolled thin, brushed with oil, sliced into ribbons, and coiled like a snail shell before resting and being rolled out once more.</span>
+      </p>
+      <p class="font-serif text-base sm:text-[17px] leading-[1.85] tracking-[0.015em] text-paper-dark mt-3">
+        印度料理也會出現Chapati，但不同的是肯亞的Chapati加入開酥工序，皮桿開抹上一層植物油，切條狀，再捲成如蝸牛般的圓形線圈，鬆弛後再次桿平。
+      </p>
+    </div>
+
+    <!-- 【單元 04】單欄容器 (16:10 影片) -->
+    <div class="editorial-media aspect-[16/10] w-full rounded-2xl overflow-hidden bg-paper-panel my-12 sm:my-16">
+      <video id="media-unit-04" src="" autoplay loop muted playsinline disablePictureInPicture class="aspect-[16/10]"></video>
+    </div>
+
+    <div class="max-w-2xl mx-auto text-center my-12 sm:my-16">
+      <span class="block font-serif italic text-xs sm:text-sm text-paper-terracotta tracking-widest uppercase mb-2.5">
+        04 · Pilau ya Mbuzi · 慢煨羊肉香料飯
+      </span>
+      <h2 class="font-serif text-xl sm:text-2xl font-normal text-paper-ink leading-snug mb-4">
+        <span class="lang-fr">Le riz parfumé traditionnel d’Afrique de l’Est</span>
+        <span class="lang-en hidden">Classic East African Spiced Rice</span>
+      </h2>
+      <p class="font-serif text-base sm:text-[17px] leading-[1.85] tracking-[0.015em] text-paper-dark">
+        <span class="lang-fr">Ce plat traditionnel de riz aux épices est généralement préparé avec de la viande de chèvre, mais le bœuf convient aussi. Faire dorer les oignons jusqu'à une couleur brun profond est le secret de sa robe et de son parfum ; le pilau masala en est l’âme. J’aime tellement ces riz riches en saveurs.</span>
+        <span class="lang-en hidden">A classic East African spiced rice, traditionally made with goat meat, though beef works wonderfully too. Browning the onions to a deep caramelized brown is the key to both color and aroma, and the pilau masala is its soul. I truly love rice infused with such rich flavors.</span>
+      </p>
+      <p class="font-serif text-base sm:text-[17px] leading-[1.85] tracking-[0.015em] text-paper-dark mt-3">
+        經典的東非傳統香料肉飯，通常用羊肉，但牛肉也可以，洋蔥炒到深褐色是顏色和香氣的關鍵，pilau masala也是靈魂香料，真的好喜歡有味道的飯。
+      </p>
+    </div>
+
+    <!-- 【單元 05】雙欄容器 (5:7 影片 × 2，合併 Kabeji & Kamande) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full my-12 sm:my-16">
+      <div class="editorial-media aspect-[5/7] w-full rounded-2xl overflow-hidden bg-paper-panel">
+        <!-- 🎬 左欄 5:7 短片 (Kabeji 炒甘藍絲) -->
+        <video id="media-unit-05-a" src="" autoplay loop muted playsinline disablePictureInPicture class="aspect-[5/7]"></video>
+      </div>
+      <div class="editorial-media aspect-[5/7] w-full rounded-2xl overflow-hidden bg-paper-panel">
+        <!-- 🎬 右欄 5:7 短片 (Kamande 燉扁豆) -->
+        <video id="media-unit-05-b" src="" autoplay loop muted playsinline disablePictureInPicture class="aspect-[5/7]"></video>
+      </div>
+    </div>
+
+    <div class="max-w-2xl mx-auto text-center my-12 sm:my-16">
+      <span class="block font-serif italic text-xs sm:text-sm text-paper-sage tracking-widest uppercase mb-2.5">
+        05 · Kabeji · 炒甘藍絲 · Kamande · 燉扁豆
+      </span>
+      <h2 class="font-serif text-xl sm:text-2xl font-normal text-paper-ink leading-snug mb-4">
+        <span class="lang-fr">« Tu sais comment couper le chou ? »</span>
+        <span class="lang-en hidden">“Do you know how to cut cabbage?”</span>
+      </h2>
+
+      <!-- 內文段落 1（Kabeji） -->
+      <p class="font-serif text-base sm:text-[17px] leading-[1.85] tracking-[0.015em] text-paper-dark">
+        <span class="lang-fr">Joy m’a demandé : « Tu sais comment couper le chou ? » Je me suis dit : « Bah... avec un couteau ! » Elle s'est alors mise à l'émincer en lanières d'une finesse incroyable. « Waouh, ce n’est pas du tout ce que j'imaginais ! À Taïwan, on le coupe plutôt en gros morceaux. » (Il faut dire que ce chou d'ici est bien plus ferme que notre chou taïwanais.)</span>
+        <span class="lang-en hidden">Joy asked me: “Do you know how to cut cabbage?” I thought: “Well... with a knife, of course!” Then she began shredding it into remarkably fine ribbons. “Wow, that’s completely different from what I thought! In Taiwan, we usually cut or tear it into larger pieces.” (Though the cabbage here is quite different from Taiwanese cabbage—much firmer in texture.)</span>
+      </p>
+      <p class="font-serif text-base sm:text-[17px] leading-[1.85] tracking-[0.015em] text-paper-dark mt-3">
+        Joy：你知道高麗菜怎麼切嗎？ 我：......(就用刀切啊) （Joy將它們細細地切成絲） 我：哇跟我想得完全不一樣！在台灣通常是切或撕成小片狀。（不過這裡的cabbage 跟台灣的高麗菜很不一樣，口感偏硬）
+      </p>
+
+      <!-- 內文段落 2（Kamande） -->
+      <p class="font-serif text-base sm:text-[17px] leading-[1.85] tracking-[0.015em] text-paper-dark mt-8">
+        <span class="lang-fr">Des lentilles précieuses que Joy a rapportées de chez elle. Ce ragoût nourrissant et parfumé peut être préparé en version végétarienne ou avec de la viande hachée, et se déguste le plus souvent avec du riz ou un bon Chapati !</span>
+        <span class="lang-en hidden">Precious lentils Joy brought all the way from home. This hearty, flavorful stew can be cooked entirely plant-based or with minced meat, and is commonly enjoyed alongside rice or warm Chapati!</span>
+      </p>
+      <p class="font-serif text-base sm:text-[17px] leading-[1.85] tracking-[0.015em] text-paper-dark mt-3">
+        Joy從家鄉帶來的珍貴食材─扁豆，可以純素材料烹煮，或是加入絞肉，這道營養豐富的燉扁豆常會搭配米飯或是Chapati一起享用！
+      </p>
+    </div>
+
+    <!-- 【單元 06】雙欄容器 (5:7 圖片 × 2，À table) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full my-12 sm:my-16">
+      <div class="editorial-media aspect-[5/7] w-full rounded-2xl overflow-hidden bg-paper-panel">
+        <!-- 📷 左欄 5:7 圖片 (大合照/圍桌特寫 1) -->
+        <img id="media-unit-06-a" src="" alt="06 · À table - 1" />
+      </div>
+      <div class="editorial-media aspect-[5/7] w-full rounded-2xl overflow-hidden bg-paper-panel">
+        <!-- 📷 右欄 5:7 圖片 (大合照/圍桌特寫 2) -->
+        <img id="media-unit-06-b" src="" alt="06 · À table - 2" />
+      </div>
+    </div>
+
+    <div class="max-w-2xl mx-auto text-center my-12 sm:my-16">
+      <span class="block font-serif italic text-xs sm:text-sm text-paper-sage tracking-widest uppercase mb-2.5">
+        06 · À table
+      </span>
+      <h2 class="font-serif text-xl sm:text-2xl font-normal text-paper-ink leading-snug mb-4">
+        <span class="lang-fr">Les moments partagés autour de la table</span>
+        <span class="lang-en hidden">Warm Moments Around the Table</span>
+      </h2>
+      <p class="font-serif text-base sm:text-[17px] leading-[1.85] tracking-[0.015em] text-paper-dark">
+        <span class="lang-fr">Ces instants passés à savourer, discuter et rire ensemble autour de la table restent les plus doux souvenirs.</span>
+        <span class="lang-en hidden">Sitting together around the table, sharing food and laughter, <br class="hidden sm:inline" />is always the warmest part of the day.</span>
+      </p>
+      <p class="font-serif text-base sm:text-[17px] leading-[1.85] tracking-[0.015em] text-paper-dark mt-3">
+        大家圍在一起吃飯聊天的時刻總是非常溫馨。
+      </p>
+    </div>
+
+    <!-- =======================================================================
+         5. 食譜抽屜 (<details>) 與頁尾 (Footer)
+         ======================================================================= -->
+    <section class="max-w-2xl mx-auto my-16">
+      <details class="group rounded-2xl bg-paper-card/70 border border-paper-border overflow-hidden transition-all">
+        <summary class="cursor-pointer px-6 py-4 flex items-center justify-between gap-3 font-serif font-medium text-base sm:text-[17px] text-paper-ink hover:text-paper-terracotta select-none">
+          <div class="flex items-center gap-2.5">
+            <span>📖</span>
+            <span>Recipe notes</span>
+          </div>
+          <svg class="accordion-arrow w-4 h-4 text-paper-muted transition-transform duration-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
+
+        <div class="px-6 pb-5 pt-3 border-t border-paper-border/70 space-y-2.5">
+          <p class="font-serif text-base sm:text-[17px] leading-[1.85] tracking-[0.015em] text-paper-dark">
+            • Pilau ya Mbuzi : Coming soon......
+          </p>
+          <p class="font-serif text-base sm:text-[17px] leading-[1.85] tracking-[0.015em] text-paper-dark">
+            • Kenya Chapati, Kamande &amp; Kabeji : Coming soon......
+          </p>
+          <p class="font-serif italic text-base sm:text-[17px] leading-[1.85] tracking-[0.015em] text-paper-terracotta pt-1">
+            Feel free to message me if you’d like the full notes — IG / Threads : @enchante.damina
+          </p>
+        </div>
+      </details>
+    </section>
+
+    <!-- 頁尾：完全無外框卡片底色，直接立於宣紙底色 (#F7F3EB) 上 -->
+    <footer class="max-w-2xl mx-auto pt-12 border-t border-paper-border/60 text-center flex flex-col items-center">
+
+      <!-- 手繪動態呼吸花苞 SVG -->
+      <div class="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center mb-4">
+        <svg viewBox="0 0 300 300" class="w-24 h-24 overflow-visible footer-bud-anim">
+          <circle cx="150" cy="132" r="56" fill="url(#bud-warm-glow)" />
+          <path d="M150,180 Q142,222 155,260" fill="none" stroke="#221F1D" stroke-width="2.6" stroke-linecap="round"/>
+          <path d="M144,218 C120,212 108,196 116,184 C132,188 142,204 144,218 Z" fill="#4A5D4E" fill-opacity="0.38" stroke="#221F1D" stroke-width="1.6"/>
+          <path d="M150,76 C122,100 114,142 128,172 C136,184 164,184 172,172 C186,142 178,100 150,76 Z" fill="#FAF7F2" stroke="#221F1D" stroke-width="2.1"/>
+          <path d="M150,77 C140,108 138,142 146,174" fill="none" stroke="#221F1D" stroke-width="1.5"/>
+          <path d="M150,182 C120,174 106,140 120,102 C126,128 136,154 150,174 Z" fill="#4A5D4E" stroke="#221F1D" stroke-width="2.0"/>
+          <path d="M150,182 C180,174 194,140 180,102 C174,128 164,154 150,174 Z" fill="#3F5143" stroke="#221F1D" stroke-width="2.0"/>
+          <path d="M150,185 C138,176 138,150 150,130 C162,150 162,176 150,185 Z" fill="#586D5C" stroke="#221F1D" stroke-width="1.9"/>
+        </svg>
+      </div>
+
+      <h3 class="font-serif text-2xl sm:text-3xl font-normal text-paper-ink">
+        <span class="lang-fr">Et si le prochain repas partagé était le nôtre ?</span>
+        <span class="lang-en hidden">What if the next shared meal were ours?</span>
+      </h3>
+
+      <p class="font-serif text-base sm:text-[17px] leading-[1.85] tracking-[0.015em] text-paper-dark mt-2 max-w-md">
+        <span class="lang-fr">D’autres bourgeons attendent dans le jardin. Ce jardin n’est pas qu’à moi : il ne fleurit que si tu me dis oui.</span>
+        <span class="lang-en hidden">More buds are waiting in the garden. This garden isn’t mine alone—it only blooms if you say yes.</span>
+      </p>
+
+      <!-- 雙按鈕 -->
+      <div class="mt-7 flex flex-wrap items-center justify-center gap-3 font-sans">
+        <a
+          href="index.html"
+          class="px-5 py-2.5 rounded-full border border-paper-border hover:border-paper-ink text-paper-ink text-xs sm:text-sm font-medium transition-colors"
+        >
+          <span class="lang-fr">← Retourner au jardin</span>
+          <span class="lang-en hidden">← Back to the garden</span>
+        </a>
+
+        <a
+          href="about.html"
+          class="px-5 py-2.5 rounded-full bg-paper-terracotta hover:bg-[#9E5236] text-paper-bg text-xs sm:text-sm font-medium shadow-sm transition-colors"
+        >
+          <span class="lang-fr">Découvrir le projet &amp; cuisiner avec moi →</span>
+          <span class="lang-en hidden">Read how it works &amp; cook with me →</span>
+        </a>
+      </div>
+
+    </footer>
+
+  </main>
+
+  <!-- =========================================================================
+       6. JavaScript：FR / EN 語言切換連動（中文常駐）+ 16:10 與 5:7 預設預覽圖生成
+       ========================================================================= -->
+  <script>
+    (function () {
+      // 1. 雙語切換同步 (僅切換 .lang-fr 與 .lang-en，中文段落常駐顯示)
+      function applyLanguageDisplay(lang) {
+        document.documentElement.setAttribute('data-lang', lang);
+        document.documentElement.lang = lang;
+        try {
+          localStorage.setItem('table_blooms_lang', lang);
+        } catch (e) {}
+
+        document.querySelectorAll('.lang-fr').forEach((el) => {
+          el.classList.toggle('hidden', lang !== 'fr');
+        });
+        document.querySelectorAll('.lang-en').forEach((el) => {
+          el.classList.toggle('hidden', lang !== 'en');
+        });
+
+        document.querySelectorAll('.lang-btn').forEach((btn) => {
+          const isMatch = btn.getAttribute('data-set-lang') === lang;
+          btn.className = isMatch
+            ? 'lang-btn px-2.5 py-0.5 rounded-full font-medium transition-colors bg-paper-ink text-paper-bg'
+            : 'lang-btn px-2.5 py-0.5 rounded-full font-medium transition-colors text-paper-muted hover:text-paper-ink';
+        });
+      }
+
+      document.querySelectorAll('.lang-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          applyLanguageDisplay(btn.getAttribute('data-set-lang'));
+        });
+      });
+
+      const savedLang = (() => {
+        try { return localStorage.getItem('table_blooms_lang'); } catch (e) { return null; }
+      })();
+      applyLanguageDisplay(savedLang === 'en' ? 'en' : 'fr');
+
+      // 2. 預設佔位圖產生器 (單元 01~04 為 16:10 [960×600]，單元 05~06 為 5:7 [500×700])
+      function createModularPreview(w, h, themeKey, label) {
+        const c = document.createElement('canvas');
+        c.width = w;
+        c.height = h;
+        const ctx = c.getContext('2d');
+
+        if (themeKey === 'unit-01') {
+          ctx.fillStyle = '#EFE9DE';
+          ctx.fillRect(0, 0, w * 0.44, h);
+          ctx.fillStyle = '#221F1D';
+          ctx.font = 'italic 26px "Cormorant Garamond", Georgia, serif';
+          ctx.fillText('Karibu mezani —', 42, h * 0.44);
+          ctx.font = 'italic 19px "Cormorant Garamond", Georgia, serif';
+          ctx.fillText('Food truly tastes best', 42, h * 0.52);
+          ctx.fillText('when cooked for others!', 42, h * 0.58);
+
+          const g = ctx.createLinearGradient(w * 0.44, 0, w, h);
+          g.addColorStop(0, '#E8D5BE');
+          g.addColorStop(1, '#9E5434');
+          ctx.fillStyle = g;
+          ctx.fillRect(w * 0.44, 0, w * 0.56, h);
+        } else {
+          const palettes = {
+            'unit-02': ['#EFE4D2', '#B56345'],
+            'unit-03': ['#F2E6D0', '#C88D4E'],
+            'unit-04': ['#E8D6C3', '#7D4128'],
+            'unit-05-a': ['#E6E8DC', '#5A7553'],
+            'unit-05-b': ['#EFE0CC', '#8C4328'],
+            'unit-06-a': ['#EAE0D3', '#6E6257'],
+            'unit-06-b': ['#E5D9C8', '#8A5A44']
+          };
+          const pal = palettes[themeKey] || ['#EFE4D2', '#B56345'];
+          const g = ctx.createLinearGradient(0, 0, w, h);
+          g.addColorStop(0, pal[0]);
+          g.addColorStop(1, pal[1]);
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 0, w, h);
+        }
+
+        ctx.fillStyle = 'rgba(250, 247, 242, 0.85)';
+        ctx.font = 'italic 18px "Cormorant Garamond", Georgia, serif';
+        ctx.fillText(label, 28, h - 26);
+
+        return c.toDataURL('image/jpeg', 0.9);
+      }
+
+      window.addEventListener('DOMContentLoaded', () => {
+        // 單欄 16:10 (960 × 600 px) — 單元 01 圖片
+        const u1 = document.getElementById('media-unit-01');
+        if (u1 && !u1.getAttribute('src')) {
+          u1.src = createModularPreview(960, 600, 'unit-01', '01 · Karibu mezani (16:10)');
+        }
+
+        // 單欄 16:10 (960 × 600 px) — 單元 02, 03, 04 影片
+        const singleVideos = [
+          { id: 'media-unit-02', key: 'unit-02', label: '02 · Les épices & la paume (16:10)' },
+          { id: 'media-unit-03', key: 'unit-03', label: '03 · Kenya Chapati (16:10)' },
+          { id: 'media-unit-04', key: 'unit-04', label: '04 · Pilau ya Mbuzi (16:10)' }
+        ];
+        singleVideos.forEach((item) => {
+          const v = document.getElementById(item.id);
+          if (v && !v.getAttribute('src') && !v.getAttribute('poster')) {
+            v.poster = createModularPreview(960, 600, item.key, item.label);
+          }
+        });
+
+        // 雙欄 5:7 (500 × 700 px) — 單元 05 雙影片 (Kabeji & Kamande)
+        const dualVideos = [
+          { id: 'media-unit-05-a', key: 'unit-05-a', label: '05A · Kabeji · 炒甘藍絲 (5:7)' },
+          { id: 'media-unit-05-b', key: 'unit-05-b', label: '05B · Kamande · 燉扁豆 (5:7)' }
+        ];
+        dualVideos.forEach((item) => {
+          const v = document.getElementById(item.id);
+          if (v && !v.getAttribute('src') && !v.getAttribute('poster')) {
+            v.poster = createModularPreview(500, 700, item.key, item.label);
+          }
+        });
+
+        // 雙欄 5:7 (500 × 700 px) — 單元 06 雙圖片 (À table)
+        const dualImages = [
+          { id: 'media-unit-06-a', key: 'unit-06-a', label: '06A · À table (5:7)' },
+          { id: 'media-unit-06-b', key: 'unit-06-b', label: '06B · À table (5:7)' }
+        ];
+        dualImages.forEach((item) => {
+          const imgEl = document.getElementById(item.id);
+          if (imgEl && !imgEl.getAttribute('src')) {
+            imgEl.src = createModularPreview(500, 700, item.key, item.label);
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
