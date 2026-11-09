@@ -511,30 +511,14 @@
         c.height = h;
         const ctx = c.getContext('2d');
 
-        if (themeKey === 'unit-01') {
-          ctx.fillStyle = '#EFE9DE';
-          ctx.fillRect(0, 0, w * 0.44, h);
-          ctx.fillStyle = '#221F1D';
-          ctx.font = 'italic 26px "Cormorant Garamond", Georgia, serif';
-          ctx.fillText('Karibu mezani —', 42, h * 0.44);
-          ctx.font = 'italic 19px "Cormorant Garamond", Georgia, serif';
-          ctx.fillText('Food truly tastes best', 42, h * 0.52);
-          ctx.fillText('when cooked for others!', 42, h * 0.58);
-
-          const g = ctx.createLinearGradient(w * 0.44, 0, w, h);
-          g.addColorStop(0, '#E8D5BE');
-          g.addColorStop(1, '#9E5434');
-          ctx.fillStyle = g;
-          ctx.fillRect(w * 0.44, 0, w * 0.56, h);
-        } else {
-          const palettes = {
+        const palettes = {
+            'unit-01': ['#E8D5BE', '#9E5434'],
             'unit-02': ['#EFE4D2', '#B56345'],
             'unit-03': ['#F2E6D0', '#C88D4E'],
             'unit-04': ['#E8D6C3', '#7D4128'],
             'unit-05-a': ['#E6E8DC', '#5A7553'],
             'unit-05-b': ['#EFE0CC', '#8C4328'],
-            'unit-06-a': ['#EAE0D3', '#6E6257'],
-            'unit-06-b': ['#E5D9C8', '#8A5A44']
+            'unit-06': ['#EAE0D3', '#6E6257']
           };
           const pal = palettes[themeKey] || ['#EFE4D2', '#B56345'];
           const g = ctx.createLinearGradient(0, 0, w, h);
@@ -542,8 +526,7 @@
           g.addColorStop(1, pal[1]);
           ctx.fillStyle = g;
           ctx.fillRect(0, 0, w, h);
-        }
-
+        
         ctx.fillStyle = 'rgba(250, 247, 242, 0.85)';
         ctx.font = 'italic 18px "Cormorant Garamond", Georgia, serif';
         ctx.fillText(label, 28, h - 26);
@@ -583,18 +566,12 @@
           }
         });
 
-        // 雙欄 5:7 (500 × 700 px) — 單元 06 雙圖片 (À table)
-        const dualImages = [
-          { id: 'media-unit-06-a', key: 'unit-06-a', label: '06A · À table (5:7)' },
-          { id: 'media-unit-06-b', key: 'unit-06-b', label: '06B · À table (5:7)' }
-        ];
-        dualImages.forEach((item) => {
-          const imgEl = document.getElementById(item.id);
-          if (imgEl && !imgEl.getAttribute('src')) {
-            imgEl.src = createModularPreview(500, 700, item.key, item.label);
+        // 單元 06 圖片 (16:10 手帳拼貼)
+        const u6 = document.getElementById('media-unit-06');
+        if (u6 && !u6.getAttribute('src')) {
+          u6.src = createModularPreview(960, 600, 'unit-06', '06 · À table (16:10)');
           }
-        });
-      });
+        });      
     })();
   </script>
 </body>
