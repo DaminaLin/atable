@@ -510,16 +510,31 @@
         c.width = w;
         c.height = h;
         const ctx = c.getContext('2d');
-        
+
+        if (themeKey === 'unit-01') {
+          ctx.fillStyle = '#EFE9DE';
+          ctx.fillRect(0, 0, w * 0.44, h);
+          ctx.fillStyle = '#221F1D';
+          ctx.font = 'italic 26px "Cormorant Garamond", Georgia, serif';
+          ctx.fillText('Karibu mezani —', 42, h * 0.44);
+          ctx.font = 'italic 19px "Cormorant Garamond", Georgia, serif';
+          ctx.fillText('Food truly tastes best', 42, h * 0.52);
+          ctx.fillText('when cooked for others!', 42, h * 0.58);
+
+          const g = ctx.createLinearGradient(w * 0.44, 0, w, h);
+          g.addColorStop(0, '#E8D5BE');
+          g.addColorStop(1, '#9E5434');
+          ctx.fillStyle = g;
+          ctx.fillRect(w * 0.44, 0, w * 0.56, h);
+        } else {
           const palettes = {
-            'unit-01': ['#E8D5BE', '#9E5434'],
-            'unit-02-a': ['#EFE4D2', '#B56345'],
-            'unit-02-b': ['#EFE4D2', '#B56345'],
+            'unit-02': ['#EFE4D2', '#B56345'],
             'unit-03': ['#F2E6D0', '#C88D4E'],
             'unit-04': ['#E8D6C3', '#7D4128'],
             'unit-05-a': ['#E6E8DC', '#5A7553'],
             'unit-05-b': ['#EFE0CC', '#8C4328'],
-            'unit-06': ['#EAE0D3', '#6E6257'],
+            'unit-06-a': ['#EAE0D3', '#6E6257'],
+            'unit-06-b': ['#E5D9C8', '#8A5A44']
           };
           const pal = palettes[themeKey] || ['#EFE4D2', '#B56345'];
           const g = ctx.createLinearGradient(0, 0, w, h);
